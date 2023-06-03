@@ -1,0 +1,106 @@
+body  {
+    background: #ffffff;
+    font-family: Arial, Helvetica, sans-serif;
+}
+
+.headline h3 {
+    font-size: 3.5em;
+    color: rgb(0, 0, 0);
+    margin-bottom: 10px;
+    padding: 0;
+}
+
+.headline h4 {
+    font-size: 2em;    
+    color: #000000;
+    margin: 10px;
+    padding: 10px;
+}
+
+.headline h5 {
+    font-size: 1em;    
+    color: #000000;
+    margin: 10px;
+    padding: 10px;
+}
+
+.grid-container {
+    display: grid;
+    grid-template-columns: auto auto auto auto;
+  }
+
+.grid-item {
+
+}
+
+.audioTrack {
+    border: #834141 solid;    
+    background-color: #834141;    
+    color: rgb(255, 255, 255);
+    border-radius: 10px;
+    margin: 10px 0;
+}
+
+#visualizeAudio {
+    width: 900px;
+    height: 50px;
+    padding: 0 6px;
+    margin: 0 auto;
+}
+
+.audioRegulators {
+    height: 150px;
+    width: 430px;
+    margin:10px 0;    
+    padding: 10px 0;
+    border: #834141 medium solid;    
+    background-color: #834141;    
+    color: rgb(255, 255, 255);
+    border-radius: 10px;
+}
+
+#audioRegulatorsAudioOne{
+    margin-right: 20px;
+}
+
+#audioRegulatorsAudioTwo{
+    margin-left: 20px;
+}
+
+.videoRegulators {
+    height: 150px;
+    width: 430px;
+    margin: 10px 0;
+    padding: 10px 0;
+    border: #834141 solid;    
+    background-color: #834141;    
+    color: rgb(255, 255, 255);
+    border-radius: 10px;
+}
+
+#audioRegulatorsVideoOne{
+    margin-right: 20px;
+}
+
+#audioRegulatorsVideoTwo{
+    margin-left: 20px;
+}
+
+.regulatorsForAll{
+    color: rgb(0, 0, 0);
+}
+
+.upload{    
+    background-color: #834141;
+    color: rgb(255, 255, 255);    
+    border-radius: 10px; 
+    margin: 10px 0;    
+    padding: 10px;
+}
+
+
+
+
+
+
+

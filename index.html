@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <title>Chromaster</title>
+  <link href="css/style.css" rel="stylesheet">
+</head>
+
+<body>
+  <div class="grid-container">
+    <div class="grid-item">
+      <div class="headline">
+        <h3>
+          Chromaster
+        </h3>
+      </div>
+    </div>
+  </div>
+
+  <!-- Audio -->
+
+  <!--Audio visualization-->
+
+  <div class="grid-container">
+    <div class="grid-item">
+      <div style="text-align: center; color:rgb(0, 0, 0);">Song 1</div>
+      <div class="audioTrack">
+        <canvas id="visualizeAudio"></canvas>
+      </div>
+    </div>
+  </div>
+  <div class="grid-container">
+    <div class="grid-item">
+      <div style="text-align: center; color:rgb(0, 0, 0);">Song 2</div>
+      <div class="audioTrack">
+        <canvas id="visualizeAudio"></canvas>
+      </div>
+    </div>
+  </div>
+
+  <!--Audio regulators-->
+
+  <div class="grid-container">
+    <div class="grid-item">
+      <div class="audioRegulators" id="audioRegulatorsAudioOne"></div>
+    </div>
+    <div class="grid-item">
+      <div class="audioRegulators" id="audioRegulatorsAudioTwo"></div>
+    </div>
+  </div>
+
+  <!--Audio regulators for all audio simultaneously-->
+
+  <div class="headline">
+    <h5>
+      Controller
+    </h5>
+  </div>
+
+  <div class="regulatorsForAll">
+    <div class="grid-container">
+      <div class="grid-item">
+        <button id="loadAudioSamples">
+          <span class="text">Load Samples</span>
+        </button>
+      </div>
+      <div class="grid-item">
+        <button id="playAllAudio">
+          <span>Play all</span>
+        </button>
+      </div>
+      <div class="grid-item">
+        <button id="pauseAllAudio">
+          <span>Pause</span>
+        </button>
+      </div>
+      <div class="grid-item">
+        <button id="loopAllAudio">
+          <span>Loop</span>
+        </button>
+      </div>
+      <div class="grid-item">
+        <button id="unloopAllAudio">
+          <span>Unloop</span>
+        </button>
+      </div>
+      <div class="grid-item">
+        <button id="muteAllAudio">
+          <span>Mute</span>
+        </button>
+      </div>
+      <div class="grid-item">
+        <button id="unmuteAllAudio">
+          <span>Unmute</span>
+        </button>
+      </div>
+      <div class="grid-item">
+        <button id="resetAudio">
+          <span>Reset</span>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Video -->
+
+  <div class="headline">
+    <h4>
+      Video
+    </h4>
+  </div>
+
+  <!--Video visualization-->
+
+  <div class="grid-container">
+    <div class="grid-item">
+      <div class="videoRegulators" id="audioRegulatorsVideoOne">
+        <button id="loadVideoSamples">
+          <span>Load Samples</span>
+        </button>
+      </div>
+    </div>
+    <div class="grid-item">
+      <div class="videoRegulators" id="audioRegulatorsVideoTwo">
+        <button id="loadVideoSamples">
+          <span>Load Samples</span>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!--Video regulators-->
+
+  <div class="headline">
+    <h5>
+      Controller
+    </h5>
+  </div>
+
+  <div class="regulatorsForAll">
+    <div class="grid-container">
+      <div class="grid-item">
+        <button id="playAllVideo">
+          <span>Play all</span>
+        </button>
+      </div>
+      <div class="grid-item">
+        <button id="pauseAllVideo">
+          <span>Pause</span>
+        </button>
+      </div>
+      <div class="grid-item">
+        <button id="muteAllVideo">
+          <span>Mute</span>
+        </button>
+      </div>
+      <div class="grid-item">
+        <button id="unmuteAllVideo">
+          <span>Unmute</span>
+        </button>
+      </div>
+      <div class="grid-item">
+        <button id="resetVideo">
+          <span>Reset</span>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Scripts -->
+
+</body>
+
+</html>
