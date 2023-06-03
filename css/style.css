@@ -1,25 +1,25 @@
 body  {
-    background: #ffffff;
-    font-family: Arial, Helvetica, sans-serif;
+    background: #1c1c1c;
+    font-family: Verdana, sans-serif;
 }
 
 .headline h3 {
     font-size: 3.5em;
-    color: rgb(0, 0, 0);
+    color: #ffffff;
     margin-bottom: 10px;
     padding: 0;
 }
 
 .headline h4 {
     font-size: 2em;    
-    color: #000000;
+    color: #ffffff;
     margin: 10px;
     padding: 10px;
 }
 
 .headline h5 {
     font-size: 1em;    
-    color: #000000;
+    color: #ffffff;
     margin: 10px;
     padding: 10px;
 }
@@ -34,9 +34,9 @@ body  {
 }
 
 .audioTrack {
-    border: #834141 solid;    
-    background-color: #834141;    
-    color: rgb(255, 255, 255);
+    border: #2e2e2e solid;    
+    background-color: #1a1a1a;    
+    color: #ffffff;
     border-radius: 10px;
     margin: 10px 0;
 }
@@ -53,9 +53,9 @@ body  {
     width: 430px;
     margin:10px 0;    
     padding: 10px 0;
-    border: #834141 medium solid;    
-    background-color: #834141;    
-    color: rgb(255, 255, 255);
+    border: #2e2e2e solid;    
+    background-color: #1a1a1a;    
+    color: #ffffff;
     border-radius: 10px;
 }
 
@@ -72,9 +72,9 @@ body  {
     width: 430px;
     margin: 10px 0;
     padding: 10px 0;
-    border: #834141 solid;    
-    background-color: #834141;    
-    color: rgb(255, 255, 255);
+    border: #2e2e2e solid;    
+    background-color: #1a1a1a;    
+    color: #ffffff;
     border-radius: 10px;
 }
 
@@ -86,17 +86,25 @@ body  {
     margin-left: 20px;
 }
 
-.regulatorsForAll{
+.switchesForAll{
     color: rgb(0, 0, 0);
 }
 
-.upload{    
-    background-color: #834141;
-    color: rgb(255, 255, 255);    
+.record{
+    display: inline-block;
+    width: 200px;
+    height: 200px;
+    background-image: url(https://pngimg.com/uploads/vinyl/vinyl_PNG5.png);
+    background-size: cover;
+}
+
+/* .upload{    
+    background-color: #1a1a1a;
+    color: #ffffff;    
     border-radius: 10px; 
     margin: 10px 0;    
     padding: 10px;
-}
+} */
 
 
 
