@@ -1,17 +1,21 @@
 // Holen aller Buttons mit class="uploadAudio" => speichern in Array uploadAudioButtons
 let uploadAudioButtons = document.getElementsByClassName('uploadAudio');
+let audioLoadedStatus = {};
 // Iterieren über alle Elemente in diesem Array
 for (const button of uploadAudioButtons) {
     button.addEventListener('click', () => {
         // Wenn angeklickt wurde des Attribut id des Buttons holen und String umwandeln in Int
         var nrOfSong = parseInt(button.getAttribute('id'));
-        // input-Element (html) erstellen und konfigurieren
-        let inputFile = document.createElement('input');
-        inputFile.type = 'file';
-        inputFile.accept = 'audio/*';
-        // Hinzufügen Eventlistener, der auf Auswahl einer Datei reagiert
-        inputFile.addEventListener('change', e => handleAudioFileSelect(e, nrOfSong), false);
-        inputFile.click();
+        // Abfangen, ob in der Spur bereits eine Audiodatei hochgeladen wurde
+        if (!audioLoadedStatus[nrOfSong]) {
+            // input-Element (html) erstellen und konfigurieren
+            let inputFile = document.createElement('input');
+            inputFile.type = 'file';
+            inputFile.accept = 'audio/*';
+            // Hinzufügen Eventlistener, der auf Auswahl einer Datei reagiert
+            inputFile.addEventListener('change', e => handleAudioFileSelect(e, nrOfSong), false);
+            inputFile.click();
+        }
     }, false);
 }
 
@@ -26,8 +30,37 @@ function handleAudioFileSelect(evt, nrOfSong) {
     const audio = document.createElement('audio');
     const controllerDiv = document.getElementById('audioRegulatorsAudio' + nrOfSong);
     controllerDiv.appendChild(audio); // Speichern, wo das Element eingebunden werden soll
-    audio.controls = true; // Anzeigen von Start und Stop
+    //audio.controls = false; // Anzeigen von Start und Stop
     audio.src = audioUrl; // Speichern der URL für html audio ELement
+
+    audioLoadedStatus[nrOfSong] = true;
+
+    const playButton = document.getElementById('playButton' + nrOfSong);
+    const volumeSlider = document.getElementById('volumeSlider' + nrOfSong);
+    const playbackSpeedSlider = document.getElementById('playbackSpeedSlider' + nrOfSong);
+
+    const record = document.getElementById('record' + nrOfSong);
+
+    console.log(playButton);
+    console.log(volumeSlider);
+
+    playButton.addEventListener('click', () => {
+        if (audio.paused) {
+            audio.play();
+            record.style.animationPlayState = 'running';
+        } else {
+            audio.pause();
+            record.style.animationPlayState = 'paused';
+        }
+    });
+
+    volumeSlider.addEventListener('input', () => {
+        audio.volume = volumeSlider.value / 100;
+    });
+
+    playbackSpeedSlider.addEventListener('input', () => {
+        audio.playbackRate = playbackSpeedSlider.value;
+    });
 
     visualizeAudio(audio, nrOfSong);
     // Überprüfen, ob die Datei ein Audioformat hat
