@@ -28,9 +28,10 @@ function handleAudioFileSelect(evt, nrOfSong) {
 
     var audioUrl = URL.createObjectURL(audioFile); // Erstellen Link zur ausgewählten Audio-Datei
     const audio = document.createElement('audio');
+    audio.id = 'audio' + nrOfSong;
     const controllerDiv = document.getElementById('audioRegulatorsAudio' + nrOfSong);
-    controllerDiv.appendChild(audio); // Speichern, wo das Element eingebunden werden soll
-    //audio.controls = false; // Anzeigen von Start und Stop
+    controllerDiv.appendChild(audio); // Speichern, der Audiodatei in controllerDiv
+    //audio.controls = false; // Anzeigen von automatisch generierter Leiste (Start/Stop-Knopf, Lautstärkeregler)
     audio.src = audioUrl; // Speichern der URL für html audio ELement
 
     audioLoadedStatus[nrOfSong] = true;
@@ -38,8 +39,9 @@ function handleAudioFileSelect(evt, nrOfSong) {
     const playButton = document.getElementById('playButton' + nrOfSong);
     const volumeSlider = document.getElementById('volumeSlider' + nrOfSong);
     const playbackSpeedSlider = document.getElementById('playbackSpeedSlider' + nrOfSong);
-
     const record = document.getElementById('record' + nrOfSong);
+    const resetButton = document.getElementById('resetButton' + nrOfSong);
+    // const playAllButton
 
     console.log(playButton);
     console.log(volumeSlider);
@@ -54,6 +56,10 @@ function handleAudioFileSelect(evt, nrOfSong) {
         }
     });
 
+    resetButton.addEventListener('click', () => {
+        resetAudioTrack(nrOfSong);
+    });
+
     volumeSlider.addEventListener('input', () => {
         audio.volume = volumeSlider.value / 100;
     });
@@ -62,20 +68,49 @@ function handleAudioFileSelect(evt, nrOfSong) {
         audio.playbackRate = playbackSpeedSlider.value;
     });
 
-    visualizeAudio(audio, nrOfSong);
-    // Überprüfen, ob die Datei ein Audioformat hat
-    /* if (audioFile.type.substring(0, 5) == 'audio') {
-        if (checkForEmptyAudioSlot()) {
-            console.log('The File ' + audioFile.name + ' of type ' + audioFile.type + ' is uploaded');
-            loadAudioFile(audioFile);
+    const loopButton = document.getElementById('loopAudioButton' + nrOfSong);
+
+    loopButton.addEventListener('click', () => {
+        audio.loop = !audio.loop; // Setze den Wert, ob audio loopt immer auf den gegensätzlichen Wert (true -> false, false -> true)
+        if (audio.loop) { // Wenn alle Elemente true sind
+            loopButton.firstElementChild.innerHTML = "Unloop";
+        } else {
+            loopButton.firstElementChild.innerHTML = "Loop";
         }
-    } */
+    })
+
+    visualizeAudio(audio, nrOfSong);
+}
+
+// Funktion zum Zurücksetzen des hochgeladenen Audiotracks
+function resetAudioTrack(nrOfSong) {
+    const record = document.getElementById('record' + nrOfSong);
+    const controllerDiv = document.getElementById('audioRegulatorsAudio' + nrOfSong);
+    const audio = document.getElementById('audio' + nrOfSong);
+
+    if (audio) {
+        audio.pause();
+        audio.src = ''; // Leeren der src, um Audio zu stoppen und von URL zu lösen
+        audio.load(); // Neuladen der Audio
+        controllerDiv.removeChild(audio);
+        delete audioLoadedStatus[nrOfSong];
+    }
+
+    // Animation der Schallplatte pausieren
+    record.style.animationPlayState = 'paused';
+    record.offsetHeight;
+
+    // Reglerwerte zurücksetzen
+    const volumeSlider = document.getElementById('volumeSlider' + nrOfSong);
+    const playbackSpeedSlider = document.getElementById('playbackSpeedSlider' + nrOfSong);
+    volumeSlider.value = 100; // Zurücksetzen der Lautstärke
+    playbackSpeedSlider.value = 1.0; // Zurücksetzen des Wiedergabegeschwindigkeitssliders
 }
 
 function visualizeAudio(audio, nrOfSong) {
     const canvas = document.getElementById('visualizeAudio' + nrOfSong);
-    canvas.width = 1100;
-    canvas.height = 50;
+    /* canvas.width = 1100;
+    canvas.height = 300; */
     const context = canvas.getContext('2d');
     const audioContext = new (window.AudioContext || window.webkitAudioContext)();
     var audioSource = null;
@@ -87,7 +122,6 @@ function visualizeAudio(audio, nrOfSong) {
     analyser.connect(audioContext.destination);
 
     analyser.fftSize = 128;
-    console.log(canvas.width);
     const bufferLength = analyser.frequencyBinCount;
     const dataArray = new Uint8Array(bufferLength);
     const barWidth = canvas.width / bufferLength;
@@ -99,15 +133,15 @@ function visualizeAudio(audio, nrOfSong) {
         context.clearRect(0, 0, canvas.width, canvas.height);
         analyser.getByteFrequencyData(dataArray);
         for (let i = 0; i < bufferLength; i++) {
-            barHeight = dataArray[i];
+            barHeight = dataArray[i] / 2; // durch 2, damit die Balkenhöhe im Canvas bleibt -> gestaucht
             context.fillStyle = "white";
             context.fillRect(x, canvas.height - barHeight, barWidth, barHeight);
             x += barWidth;
         }
-
         requestAnimationFrame(animate);
     }
-
     animate();
 }
+
+
 
