@@ -4,17 +4,21 @@ body  {
 }
 
 .headline h3 {
-    font-size: 3.5em;
+    font-size: 4.0em;
     color: #ffffff;
+    background: linear-gradient(to right, #61aec7, #ccd400);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
     margin-bottom: 10px;
-    padding: 0;
 }
 
 .headline h4 {
     font-size: 2em;    
     color: #ffffff;
-    margin: 10px;
+    margin: 25px 0px;
     padding: 10px;
+    text-align: center;
+    background: linear-gradient(to right, #61aec7, #ccd400);
 }
 
 .headline h5 {
@@ -22,18 +26,16 @@ body  {
     color: #ffffff;
     margin: 10px;
     padding: 10px;
+    text-align: center;
 }
 
 .grid-container {
     display: grid;
     grid-template-columns: auto auto auto auto;
-  }
-
-.audioButton {
-    height: 30px;
-    width: 50px;
-    margin-left: 10px;
+    justify-content: center;
 }
+
+/* Audio CSS */
 
 .audioTrack {
     border: #2e2e2e solid;    
@@ -50,46 +52,92 @@ canvas {
     margin: 0 auto;
 }
 
-.audioRegulators {
-    height: 150px;
+.uploadAudio{
+    cursor: pointer;
+    margin-top: 10px;
+}
+
+#audioRegulatorsAudio1{
+    margin-right: 12px;
+}
+
+#audioRegulatorsAudio2{
+    margin-left: 12px;
+}
+
+.audioRegulators, .videoRegulators, .videoPlayer {
+    height: auto;
     width: 430px;
     margin:10px 0;    
-    padding: 10px 0;
+    padding: 10px 0px 10px 10px;
     border: #2e2e2e solid;    
     background-color: #1a1a1a;    
     color: #ffffff;
     border-radius: 10px;
 }
 
-#audioRegulatorsAudioOne{
-    margin-right: 20px;
+.audioRegulators button{
+    cursor: pointer;
 }
 
-#audioRegulatorsAudioTwo{
-    margin-left: 20px;
-}
-
-.videoRegulators {
-    height: 150px;
-    width: 430px;
-    margin: 10px 0;
-    padding: 10px 0;
-    border: #2e2e2e solid;    
-    background-color: #1a1a1a;    
-    color: #ffffff;
-    border-radius: 10px;
-}
-
-#audioRegulatorsVideoOne{
-    margin-right: 20px;
-}
-
-#audioRegulatorsVideoTwo{
-    margin-left: 20px;
+.audioButton {
+    height: 30px;
+    width: 50px;
+    margin-left: 10px;
 }
 
 .switchesForAll{
-    color: rgb(0, 0, 0);
+    color: #000000;
+    margin-top: 30px;
+}
+
+.switchesForAll button {
+    cursor: pointer;
+    width: 100px;
+    color: #ffffff;
+    text-align: center;
+    margin: 5px;
+    padding: 10px;
+    background-color: transparent;
+    border-style: solid;
+    border-width: 3px;
+    border-image: linear-gradient(to right, #61aec7, #ccd400) 1;
+}
+
+.switchesForAll button:hover{
+    background: linear-gradient(to right, #61aec7, #ccd400);
+    opacity: 1;
+}
+
+.slider{
+    -webkit-appearance: none;
+    appearance: none;
+    cursor: pointer;
+    width: auto;
+    background: #5e6364;
+    outline:none;
+    border-radius: 15px;
+    height: 5px;
+}
+
+.slider::-webkit-slider-thumb{ 
+    -webkit-appearance: none;
+    appearance: none;
+    height: 20px;
+    width: 20px;
+    border-radius: 50%;
+    border: none;
+    background-color: #ccd400;
+    transition: .2s ease-in-out;
+}
+
+.slider::-moz-range-thumb{ 
+    height: 20px;
+    width: 20px;
+    border-radius: 50%;
+    border: none;
+    background-color: #ccd400;
+    transition: .2s ease-in-out;
 }
 
 .record{
@@ -103,6 +151,7 @@ canvas {
     animation-timing-function: linear;
     animation-iteration-count: infinite;
     animation-play-state: paused;
+    margin-top: 50px;
 }
 
 @keyframes rotation {
@@ -114,9 +163,52 @@ canvas {
     }
 }
 
+/* Video CSS */
 
+/* .videoPlayer{
+    height: 150px;
+    width: 430px;
+    margin: 10px 0;
+    padding: 10px 0;
+    border: #2e2e2e solid;    
+    background-color: #1a1a1a;    
+    color: #ffffff;
+    border-radius: 10px;
+} */
 
+#VideoOne{
+    margin-right: 124px;
+}
 
+#VideoTwo{
+    margin-left: 124px;
+}
+
+.videoRegulators button{
+    cursor: pointer;
+}
+
+#loadVideoSamples1{
+    margin-right: 124px;
+}
+
+#loadVideoSamples2{
+    margin-left: 124px;
+}
+
+.videoButton{
+    height: 30px;
+    width: 50px;
+    margin-left: 10px;
+}
+
+#audioRegulatorsVideoOne{
+    margin-right: 12px;
+}
+
+#audioRegulatorsVideoTwo{
+    margin-left: 12px;
+}
 
 
 
