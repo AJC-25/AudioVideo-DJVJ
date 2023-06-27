@@ -11,6 +11,8 @@ npm init
 2. Install the live-server
 ```
 npm install live-server --save-dev
+or:
+npm install -g live-server  
 ```
 
 3. Run the application
