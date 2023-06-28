@@ -141,7 +141,115 @@ function visualizeAudio(audio, nrOfSong) {
         requestAnimationFrame(animate);
     }
     animate();
+
+// Holen aller Buttons mit class="uploadVideo" => speichern in Array uploadVideoButtons
+let uploadVideoButtons = document.getElementsByClassName('uploadVideo1');
+let videoLoadedStatus = {};
+
+Array.from(uploadVideoButtons).forEach(button => {
+    button.addEventListener('click', () => {
+        var nrOfVideo = parseInt(button.getAttribute('id').replace('uploadVideo1', ''));
+        if (!videoLoadedStatus[nrOfVideo]) {
+            let fileInput = createFileInput(nrOfVideo); // Erstelle das File Input-Element
+            fileInput.addEventListener('change', e => handleVideoFileSelect(e, nrOfVideo), false);
+            fileInput.click(); // Trigger the click event on the file input element
+        }
+    }, false);
+});
+
+// Erstellt das File Input-Element
+function createFileInput(nrOfVideo) {
+    let fileInput = document.createElement('input');
+    fileInput.type = 'file';
+    fileInput.accept = 'video/mp4';
+    fileInput.setAttribute('data-nrOfVideo', nrOfVideo); // Speichere die Nummer des Videos als Attribut
+    document.body.appendChild(fileInput); // Füge das File Input-Element zum Dokument hinzu
+    return fileInput;
 }
 
+// Verarbeiten der ausgewählten Videodatei
+function handleVideoFileSelect(evt, nrOfVideo) {
+    var videoFile = evt.target.files[0]; // Speichern der ausgewählten Datei mit Index[0] => 1. Datei
+    evt.stopPropagation();
+    evt.preventDefault();
 
+    var videoUrl = URL.createObjectURL(videoFile); // Erstellen des Links zur ausgewählten Video-Datei
+    const video = document.getElementById('video' + nrOfVideo);
+    video.src = videoUrl; // Speichern der URL für das HTML-Videoelement
 
+    videoLoadedStatus[nrOfVideo] = true;
+
+    const playButton = document.getElementById('videoPlayButton' + nrOfVideo);
+    const volumeSlider = document.getElementById('videoVolumeSlider' + nrOfVideo);
+    const playbackSpeedSlider = document.getElementById('videoPlaybackSpeedSlider' + nrOfVideo);
+    const resetButton = document.getElementById('videoResetButton' + nrOfVideo);
+
+    playButton.addEventListener('click', () => {
+        if (video.paused) {
+            video.play();
+        } else {
+            video.pause();
+        }
+    });
+
+    resetButton.addEventListener('click', () => {
+        resetVideoTrack(nrOfVideo);
+    });
+
+    volumeSlider.addEventListener('input', () => {
+        video.volume = volumeSlider.value / 100;
+    });
+
+    playbackSpeedSlider.addEventListener('input', () => {
+        video.playbackRate = playbackSpeedSlider.value;
+    });
+
+    const loopButton = document.getElementById('loopVideoButton' + nrOfVideo);
+
+    loopButton.addEventListener('click', () => {
+        video.loop = !video.loop;
+        if (video.loop) {
+            loopButton.innerHTML = "Unloop";
+        } else {
+            loopButton.innerHTML = "Loop";
+        }
+    });
+
+    visualizeVideo(video, nrOfVideo);
+}
+
+// Funktion zum Zurücksetzen des hochgeladenen Videotracks
+function resetVideoTrack(nrOfVideo) {
+    const video = document.getElementById('video' + nrOfVideo);
+
+    if (video) {
+        video.pause();
+        video.src = '';
+        video.load();
+        delete videoLoadedStatus[nrOfVideo];
+    }
+
+    const volumeSlider = document.getElementById('volumeSlider' + nrOfVideo);
+    const playbackSpeedSlider = document.getElementById('playbackSpeedSlider' + nrOfVideo);
+    volumeSlider.value = 100;
+    playbackSpeedSlider.value = 1.0;
+}
+
+function visualizeVideo(video, nrOfVideo) {
+    const canvas = document.getElementById('visualizeVideo' + nrOfVideo);
+    const context = canvas.getContext('2d');
+
+    video.addEventListener('play', () => {
+        const animate = () => {
+            if (video.paused || video.ended) {
+                return;
+            }
+
+            context.drawImage(video, 0, 0, canvas.width, canvas.height);
+            requestAnimationFrame(animate);
+        };
+
+        animate();
+    });
+}
+}
