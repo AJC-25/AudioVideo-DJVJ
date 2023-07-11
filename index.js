@@ -1,6 +1,11 @@
 // Holen aller Buttons mit class="uploadAudio" => speichern in Array uploadAudioButtons
 let uploadAudioButtons = document.getElementsByClassName('uploadAudio');
 let audioLoadedStatus = {};
+
+// Holen aller Buttons mit class="uploadVideo" => speichern in Array uploadVideoButtons
+let uploadVideoButtons = document.getElementsByClassName('uploadVideo');
+let videoLoadedStatus = {};
+
 // Iterieren über alle Elemente in diesem Array
 for (const button of uploadAudioButtons) {
     button.addEventListener('click', () => {
@@ -18,6 +23,17 @@ for (const button of uploadAudioButtons) {
         }
     }, false);
 }
+
+Array.from(uploadVideoButtons).forEach(button => {
+    button.addEventListener('click', () => {
+        var nrOfVideo = parseInt(button.getAttribute('id'));
+        if (!videoLoadedStatus[nrOfVideo]) {
+            let fileInput = createVideoFileInput(nrOfVideo); // Erstelle das File Input-Element
+            fileInput.addEventListener('change', e => handleVideoFileSelect(e, nrOfVideo), false);
+            fileInput.click(); // Trigger the click event on the file input element
+        }
+    }, false);
+});
 
 // Verarbeiten der ausgewählten Audiodatei
 function handleAudioFileSelect(evt, nrOfSong) {
@@ -50,9 +66,11 @@ function handleAudioFileSelect(evt, nrOfSong) {
         if (audio.paused) {
             audio.play();
             record.style.animationPlayState = 'running';
+            video.play();
         } else {
             audio.pause();
             record.style.animationPlayState = 'paused';
+            video.pause();
         }
     });
 
@@ -82,88 +100,12 @@ function handleAudioFileSelect(evt, nrOfSong) {
     visualizeAudio(audio, nrOfSong);
 }
 
-// Funktion zum Zurücksetzen des hochgeladenen Audiotracks
-function resetAudioTrack(nrOfSong) {
-    const record = document.getElementById('record' + nrOfSong);
-    const controllerDiv = document.getElementById('audioRegulatorsAudio' + nrOfSong);
-    const audio = document.getElementById('audio' + nrOfSong);
-
-    if (audio) {
-        audio.pause();
-        audio.src = ''; // Leeren der src, um Audio zu stoppen und von URL zu lösen
-        audio.load(); // Neuladen der Audio
-        controllerDiv.removeChild(audio);
-        delete audioLoadedStatus[nrOfSong];
-    }
-
-    // Animation der Schallplatte pausieren
-    record.style.animationPlayState = 'paused';
-    record.offsetHeight;
-
-    // Reglerwerte zurücksetzen
-    const volumeSlider = document.getElementById('volumeSlider' + nrOfSong);
-    const playbackSpeedSlider = document.getElementById('playbackSpeedSlider' + nrOfSong);
-    volumeSlider.value = 100; // Zurücksetzen der Lautstärke
-    playbackSpeedSlider.value = 1.0; // Zurücksetzen des Wiedergabegeschwindigkeitssliders
-}
-
-function visualizeAudio(audio, nrOfSong) {
-    const canvas = document.getElementById('visualizeAudio' + nrOfSong);
-    /* canvas.width = 1100;
-    canvas.height = 300; */
-    const context = canvas.getContext('2d');
-    const audioContext = new (window.AudioContext || window.webkitAudioContext)();
-    var audioSource = null;
-    var analyser = null;
-
-    audioSource = audioContext.createMediaElementSource(audio);
-    analyser = audioContext.createAnalyser();
-    audioSource.connect(analyser);
-    analyser.connect(audioContext.destination);
-
-    analyser.fftSize = 128;
-    const bufferLength = analyser.frequencyBinCount;
-    const dataArray = new Uint8Array(bufferLength);
-    const barWidth = canvas.width / bufferLength;
-
-    let x = 0;
-    let barHeight = 0;
-    function animate() {
-        x = 0;
-        context.clearRect(0, 0, canvas.width, canvas.height);
-        analyser.getByteFrequencyData(dataArray);
-        for (let i = 0; i < bufferLength; i++) {
-            barHeight = dataArray[i] / 2; // durch 2, damit die Balkenhöhe im Canvas bleibt -> gestaucht
-            context.fillStyle = "white";
-            context.fillRect(x, canvas.height - barHeight, barWidth, barHeight);
-            x += barWidth;
-        }
-        requestAnimationFrame(animate);
-    }
-    animate();
-
-// Holen aller Buttons mit class="uploadVideo" => speichern in Array uploadVideoButtons
-let uploadVideoButtons = document.getElementsByClassName('uploadVideo1');
-let videoLoadedStatus = {};
-
-Array.from(uploadVideoButtons).forEach(button => {
-    button.addEventListener('click', () => {
-        var nrOfVideo = parseInt(button.getAttribute('id').replace('uploadVideo1', ''));
-        if (!videoLoadedStatus[nrOfVideo]) {
-            let fileInput = createFileInput(nrOfVideo); // Erstelle das File Input-Element
-            fileInput.addEventListener('change', e => handleVideoFileSelect(e, nrOfVideo), false);
-            fileInput.click(); // Trigger the click event on the file input element
-        }
-    }, false);
-});
-
-// Erstellt das File Input-Element
-function createFileInput(nrOfVideo) {
+function createVideoFileInput(nrOfVideo) {
     let fileInput = document.createElement('input');
     fileInput.type = 'file';
-    fileInput.accept = 'video/mp4';
-    fileInput.setAttribute('data-nrOfVideo', nrOfVideo); // Speichere die Nummer des Videos als Attribut
-    document.body.appendChild(fileInput); // Füge das File Input-Element zum Dokument hinzu
+    fileInput.accept = 'video/*';
+    fileInput.setAttribute('id', 'videoInput' + nrOfVideo); // Speichere die Nummer des Videos als Attribut
+    //fileInput.addEventListener('change', e => handleVideoFileSelect(e, nrOfVideo), false);
     return fileInput;
 }
 
@@ -174,7 +116,10 @@ function handleVideoFileSelect(evt, nrOfVideo) {
     evt.preventDefault();
 
     var videoUrl = URL.createObjectURL(videoFile); // Erstellen des Links zur ausgewählten Video-Datei
-    const video = document.getElementById('video' + nrOfVideo);
+
+    const video = document.createElement('video');
+    const controllerDiv = document.getElementById('videoRegulatorsVideo' + nrOfVideo);
+    controllerDiv.appendChild(video);
     video.src = videoUrl; // Speichern der URL für das HTML-Videoelement
 
     videoLoadedStatus[nrOfVideo] = true;
@@ -214,18 +159,43 @@ function handleVideoFileSelect(evt, nrOfVideo) {
             loopButton.innerHTML = "Loop";
         }
     });
-
-    visualizeVideo(video, nrOfVideo);
 }
 
-// Funktion zum Zurücksetzen des hochgeladenen Videotracks
+// Funktion zum Zurücksetzen des hochgeladenen Audiotracks
+function resetAudioTrack(nrOfSong) {
+    const record = document.getElementById('record' + nrOfSong);
+    const controllerDiv = document.getElementById('audioRegulatorsAudio' + nrOfSong);
+    const audio = document.getElementById('audio' + nrOfSong);
+
+    if (audio) {
+        audio.pause();
+        audio.src = ''; // Leeren der src, um Audio zu stoppen und von URL zu lösen
+        audio.load(); // Neuladen der Audio
+        controllerDiv.removeChild(audio);
+        delete audioLoadedStatus[nrOfSong];
+    }
+
+    // Animation der Schallplatte pausieren
+    record.style.animationPlayState = 'paused';
+    record.offsetHeight;
+
+    // Reglerwerte zurücksetzen
+    const volumeSlider = document.getElementById('volumeSlider' + nrOfSong);
+    const playbackSpeedSlider = document.getElementById('playbackSpeedSlider' + nrOfSong);
+    volumeSlider.value = 100; // Zurücksetzen der Lautstärke
+    playbackSpeedSlider.value = 1.0; // Zurücksetzen des Wiedergabegeschwindigkeitssliders
+}
+
+// Funktion zum Zurücksetzen des hochgeladenen Videotracks --> still needs fix
 function resetVideoTrack(nrOfVideo) {
+    const controllerDiv = document.getElementById('videoRegulatorsVideo' + nrOfVideo);
     const video = document.getElementById('video' + nrOfVideo);
 
     if (video) {
         video.pause();
         video.src = '';
         video.load();
+        controllerDiv.removeChild(video);
         delete videoLoadedStatus[nrOfVideo];
     }
 
@@ -235,21 +205,36 @@ function resetVideoTrack(nrOfVideo) {
     playbackSpeedSlider.value = 1.0;
 }
 
-function visualizeVideo(video, nrOfVideo) {
-    const canvas = document.getElementById('visualizeVideo' + nrOfVideo);
+function visualizeAudio(audio, nrOfSong) {
+    const canvas = document.getElementById('visualizeAudio' + nrOfSong);
     const context = canvas.getContext('2d');
+    const audioContext = new (window.AudioContext || window.webkitAudioContext)();
+    var audioSource = null;
+    var analyser = null;
 
-    video.addEventListener('play', () => {
-        const animate = () => {
-            if (video.paused || video.ended) {
-                return;
-            }
+    audioSource = audioContext.createMediaElementSource(audio);
+    analyser = audioContext.createAnalyser();
+    audioSource.connect(analyser);
+    analyser.connect(audioContext.destination);
 
-            context.drawImage(video, 0, 0, canvas.width, canvas.height);
-            requestAnimationFrame(animate);
-        };
+    analyser.fftSize = 128;
+    const bufferLength = analyser.frequencyBinCount;
+    const dataArray = new Uint8Array(bufferLength);
+    const barWidth = canvas.width / bufferLength;
 
-        animate();
-    });
-}
+    let x = 0;
+    let barHeight = 0;
+    function animate() {
+        x = 0;
+        context.clearRect(0, 0, canvas.width, canvas.height);
+        analyser.getByteFrequencyData(dataArray);
+        for (let i = 0; i < bufferLength; i++) {
+            barHeight = dataArray[i] / 2; // durch 2, damit die Balkenhöhe im Canvas bleibt -> gestaucht
+            context.fillStyle = "white";
+            context.fillRect(x, canvas.height - barHeight, barWidth, barHeight);
+            x += barWidth;
+        }
+        requestAnimationFrame(animate);
+    }
+    animate();
 }

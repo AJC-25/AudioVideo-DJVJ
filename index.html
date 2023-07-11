@@ -186,252 +186,157 @@
     </div>
   </div>
 
-<!-- Video -->
-<div class="headline">
-  <h4>Video</h4>
-</div>
-
-<!-- Video part -->
-<div class="grid-item">
-  <div style="text-align: center; color:#ffffff;">
-    <video id="video1" width="320" height="240">
-      <source src="" type="video/mp4">
-      Your browser does not support the video tag.
-    </video>
-    <br>
-    <input type="file" id="uploadVideo1" name="videoFile" accept="video/mp4" style="display: none;">
-    <button class="uploadVideoButton" data-file-input-id="uploadVideo1">Upload Video</button>
-    <div id="videoPreview1"></div> <!-- Vorschau für das Video -->
+  <!-- Video -->
+  <div class="headline">
+    <h4>Video</h4>
   </div>
-</div>
-<div class="grid-item">
-  <div style="text-align: center; color:#ffffff;">
-    <video id="video2" width="320" height="240">
-      <source src="" type="video/mp4">
-      Your browser does not support the video tag.
-    </video>
-    <br>
-    <input type="file" id="uploadVideo2" name="videoFile" accept="video/mp4" style="display: none;">
-    <button class="uploadVideoButton" data-file-input-id="uploadVideo2">Upload Video</button>
-    <div id="videoPreview2"></div> <!-- Vorschau für das Video -->
+
+  <!-- Video part -->
+  <div class="grid-item">
+    <div style="text-align: center; color:#ffffff;">
+      <video id="video1" width="320" height="240">
+        Your browser does not support the video tag.
+      </video>
+      <br>
+      <button class="uploadVideo" id="1">Upload Video</button>
+      <div id="videoPreview1"></div> <!-- Vorschau für das Video -->
+    </div>
   </div>
-</div>
+  <div class="grid-item">
+    <div style="text-align: center; color:#ffffff;">
+      <video id="video2" width="320" height="240">
+        Your browser does not support the video tag.
+      </video>
+      <br>
+      <button class="uploadVideo" id="2">Upload Video</button>
+      <div id="videoPreview2"></div> <!-- Vorschau für das Video -->
+    </div>
+  </div>
 
 
-<!--Video regulators for all audio simultaneously-->
-<div class="grid-item">
-  <div class="switchesForAll">
-    <div class="grid-container">
-      <div class="grid-item video-regulators">
-        <button id="playAllVideo">
-          <span>Play all</span>
-        </button>
+  <!--Video regulators for all audio simultaneously-->
+  <div class="grid-item">
+    <div class="switchesForAll">
+      <div class="grid-container">
+        <div class="grid-item video-regulators">
+          <button id="playAllVideo">
+            <span>Play all</span>
+          </button>
 
-        <button id="pauseAllVideo">
-          <span>Pause</span>
-        </button>
-        <br>
+          <button id="pauseAllVideo">
+            <span>Pause</span>
+          </button>
+          <br>
 
-        <button id="muteAllVideo">
-          <span>Mute</span>
-        </button>
+          <button id="muteAllVideo">
+            <span>Mute</span>
+          </button>
 
-        <button id="unmuteAllVideo">
-          <span>Unmute</span>
-        </button>
-        <br>
+          <button id="unmuteAllVideo">
+            <span>Unmute</span>
+          </button>
+          <br>
 
-        <button id="resetVideo">
-          <span>Reset</span>
-        </button>
+          <button id="resetVideo">
+            <span>Reset</span>
+          </button>
+        </div>
       </div>
     </div>
   </div>
-</div>
-<!--End Video regulators for all audio simultaneously-->
+  <!--End Video regulators for all audio simultaneously-->
 
-<!--Video regulators left-->
-<div class="grid-item video-regulator1">
-  <div class="videoRegulators" id="audioRegulatorsVideoTwo">
-    <button class="videoButton" id="videoPlayButton">
-      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 14 14" height="20" width="20">
-        <g>
-          <line x1="13.5" y1="2.5" x2="13.5" y2="11.5" fill="none" stroke="#000000" stroke-linecap="round"
-            stroke-linejoin="round"></line>
-          <line x1="10.5" y1="2.5" x2="10.5" y2="11.5" fill="none" stroke="#000000" stroke-linecap="round"
-            stroke-linejoin="round"></line>
-          <path
-            d="M.5,10.29a.7.7,0,0,0,.37.62.71.71,0,0,0,.73,0l5.08-3.3a.7.7,0,0,0,0-1.18L1.6,3.11a.71.71,0,0,0-.73,0,.7.7,0,0,0-.37.62Z"
-            fill="none" stroke="#000000" stroke-linecap="round" stroke-linejoin="round"></path>
-        </g>
-      </svg>
-    </button>
-    <button class="loopVideo" id="loopVideoButton">
-      <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 14" height="20" width="20">
-        <g id="arrow-infinite-loop--arrow-diagram-loop-infinity-repeat">
-          <path id="Vector" stroke="#000000" stroke-linecap="round" stroke-linejoin="round"
-            d="M5 10.43a2.37 2.37 0 0 1-1.5.57A2.75 2.75 0 0 1 .65 9.192C.511 8.811.5 8 .5 8s.012-.81.15-1.192A2.75 2.75 0 0 1 3.5 5c2.75 0 4.25 6 7 6a2.75 2.75 0 0 0 2.85-1.808C13.489 8.811 13.5 8 13.5 8s-.012-.81-.15-1.192A2.75 2.75 0 0 0 10.5 5h-2l2-2">
-          </path>
-        </g>
-      </svg>
-    </button>
-    <button class="videoResetButton" id="videoResetButton">
-      <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 14" height="20" width="20">
-        <g id="delete-1--remove-add-button-buttons-delete-cross-x-mathematics-multiply-math">
-          <path id="Vector" stroke="#000000" stroke-linecap="round" stroke-linejoin="round" d="M13.5 0.5L0.5 13.5">
-          </path>
-          <path id="Vector_2" stroke="#000000" stroke-linecap="round" stroke-linejoin="round"
-            d="M0.5 0.5L13.5 13.5"></path>
-        </g>
-      </svg>
-    </button>
+  <!--Video regulators left-->
+  <div class="grid-item">
+    <div class="videoRegulators" id="videoRegulatorsVideo1">
+      <button class="videoButton" id="videoPlayButton1">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 14 14" height="20" width="20">
+          <g>
+            <line x1="13.5" y1="2.5" x2="13.5" y2="11.5" fill="none" stroke="#000000" stroke-linecap="round"
+              stroke-linejoin="round"></line>
+            <line x1="10.5" y1="2.5" x2="10.5" y2="11.5" fill="none" stroke="#000000" stroke-linecap="round"
+              stroke-linejoin="round"></line>
+            <path
+              d="M.5,10.29a.7.7,0,0,0,.37.62.71.71,0,0,0,.73,0l5.08-3.3a.7.7,0,0,0,0-1.18L1.6,3.11a.71.71,0,0,0-.73,0,.7.7,0,0,0-.37.62Z"
+              fill="none" stroke="#000000" stroke-linecap="round" stroke-linejoin="round"></path>
+          </g>
+        </svg>
+      </button>
+      <button class="loopVideo" id="loopVideoButton1">
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 14" height="20" width="20">
+          <g id="arrow-infinite-loop--arrow-diagram-loop-infinity-repeat">
+            <path id="Vector" stroke="#000000" stroke-linecap="round" stroke-linejoin="round"
+              d="M5 10.43a2.37 2.37 0 0 1-1.5.57A2.75 2.75 0 0 1 .65 9.192C.511 8.811.5 8 .5 8s.012-.81.15-1.192A2.75 2.75 0 0 1 3.5 5c2.75 0 4.25 6 7 6a2.75 2.75 0 0 0 2.85-1.808C13.489 8.811 13.5 8 13.5 8s-.012-.81-.15-1.192A2.75 2.75 0 0 0 10.5 5h-2l2-2">
+            </path>
+          </g>
+        </svg>
+      </button>
+      <button class="videoResetButton" id="videoResetButton1">
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 14" height="20" width="20">
+          <g id="delete-1--remove-add-button-buttons-delete-cross-x-mathematics-multiply-math">
+            <path id="Vector" stroke="#000000" stroke-linecap="round" stroke-linejoin="round" d="M13.5 0.5L0.5 13.5">
+            </path>
+            <path id="Vector_2" stroke="#000000" stroke-linecap="round" stroke-linejoin="round" d="M0.5 0.5L13.5 13.5">
+            </path>
+          </g>
+        </svg>
+      </button>
 
-    <div class="sliderRegulators" id="sliderVideo">
-      <p>Volume:</p>
-      <input type="range" class="slider" id="videoVolumeSlider" value="100" min="0" max="100">
-      <p>Playback speed:</p>
-      <input type="range" class="slider" id="videoPlaybackSpeedSlider" value="1.0" min="1.0" max="8.0">
+      <div class="sliderRegulators" id="sliderVideo">
+        <p>Volume:</p>
+        <input type="range" class="slider" id="videoVolumeSlider1" value="100" min="0" max="100">
+        <p>Playback speed:</p>
+        <input type="range" class="slider" id="videoPlaybackSpeedSlider1" value="1.0" min="1.0" max="8.0">
+      </div>
     </div>
   </div>
-</div>
-</div>
+  </div>
 
-<!--Video regulators right-->
-<div class="grid-item video-regulator2">
-  <div class="videoRegulators" id="audioRegulatorsVideoTwo">
-    <button class="videoButton" id="videoPlayButton">
-      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 14 14" height="20" width="20">
-        <g>
-          <line x1="13.5" y1="2.5" x2="13.5" y2="11.5" fill="none" stroke="#000000" stroke-linecap="round"
-            stroke-linejoin="round"></line>
-          <line x1="10.5" y1="2.5" x2="10.5" y2="11.5" fill="none" stroke="#000000" stroke-linecap="round"
-            stroke-linejoin="round"></line>
-          <path
-            d="M.5,10.29a.7.7,0,0,0,.37.62.71.71,0,0,0,.73,0l5.08-3.3a.7.7,0,0,0,0-1.18L1.6,3.11a.71.71,0,0,0-.73,0,.7.7,0,0,0-.37.62Z"
-            fill="none" stroke="#000000" stroke-linecap="round" stroke-linejoin="round"></path>
-        </g>
-      </svg>
-    </button>
-    <button class="loopVideo" id="loopVideoButton">
-      <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 14" height="20" width="20">
-        <g id="arrow-infinite-loop--arrow-diagram-loop-infinity-repeat">
-          <path id="Vector" stroke="#000000" stroke-linecap="round" stroke-linejoin="round"
-            d="M5 10.43a2.37 2.37 0 0 1-1.5.57A2.75 2.75 0 0 1 .65 9.192C.511 8.811.5 8 .5 8s.012-.81.15-1.192A2.75 2.75 0 0 1 3.5 5c2.75 0 4.25 6 7 6a2.75 2.75 0 0 0 2.85-1.808C13.489 8.811 13.5 8 13.5 8s-.012-.81-.15-1.192A2.75 2.75 0 0 0 10.5 5h-2l2-2">
-          </path>
-        </g>
-      </svg>
-    </button>
-    <button class="videoResetButton" id="videoResetButton">
-      <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 14" height="20" width="20">
-        <g id="delete-1--remove-add-button-buttons-delete-cross-x-mathematics-multiply-math">
-          <path id="Vector" stroke="#000000" stroke-linecap="round" stroke-linejoin="round" d="M13.5 0.5L0.5 13.5">
-          </path>
-          <path id="Vector_2" stroke="#000000" stroke-linecap="round" stroke-linejoin="round"
-            d="M0.5 0.5L13.5 13.5"></path>
-        </g>
-      </svg>
-    </button>
+  <!--Video regulators right-->
+  <div class="grid-item">
+    <div class="videoRegulators" id="videoRegulatorsVideo2">
+      <button class="videoButton" id="videoPlayButton2">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 14 14" height="20" width="20">
+          <g>
+            <line x1="13.5" y1="2.5" x2="13.5" y2="11.5" fill="none" stroke="#000000" stroke-linecap="round"
+              stroke-linejoin="round"></line>
+            <line x1="10.5" y1="2.5" x2="10.5" y2="11.5" fill="none" stroke="#000000" stroke-linecap="round"
+              stroke-linejoin="round"></line>
+            <path
+              d="M.5,10.29a.7.7,0,0,0,.37.62.71.71,0,0,0,.73,0l5.08-3.3a.7.7,0,0,0,0-1.18L1.6,3.11a.71.71,0,0,0-.73,0,.7.7,0,0,0-.37.62Z"
+              fill="none" stroke="#000000" stroke-linecap="round" stroke-linejoin="round"></path>
+          </g>
+        </svg>
+      </button>
+      <button class="loopVideo" id="loopVideoButton2">
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 14" height="20" width="20">
+          <g id="arrow-infinite-loop--arrow-diagram-loop-infinity-repeat">
+            <path id="Vector" stroke="#000000" stroke-linecap="round" stroke-linejoin="round"
+              d="M5 10.43a2.37 2.37 0 0 1-1.5.57A2.75 2.75 0 0 1 .65 9.192C.511 8.811.5 8 .5 8s.012-.81.15-1.192A2.75 2.75 0 0 1 3.5 5c2.75 0 4.25 6 7 6a2.75 2.75 0 0 0 2.85-1.808C13.489 8.811 13.5 8 13.5 8s-.012-.81-.15-1.192A2.75 2.75 0 0 0 10.5 5h-2l2-2">
+            </path>
+          </g>
+        </svg>
+      </button>
+      <button class="videoResetButton" id="videoResetButton2">
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 14" height="20" width="20">
+          <g id="delete-1--remove-add-button-buttons-delete-cross-x-mathematics-multiply-math">
+            <path id="Vector" stroke="#000000" stroke-linecap="round" stroke-linejoin="round" d="M13.5 0.5L0.5 13.5">
+            </path>
+            <path id="Vector_2" stroke="#000000" stroke-linecap="round" stroke-linejoin="round" d="M0.5 0.5L13.5 13.5">
+            </path>
+          </g>
+        </svg>
+      </button>
 
-    <div class="sliderRegulators" id="sliderVideo">
-      <p>Volume:</p>
-      <input type="range" class="slider" id="videoVolumeSlider" value="100" min="0" max="100">
-      <p>Playback speed:</p>
-      <input type="range" class="slider" id="videoPlaybackSpeedSlider" value="1.0" min="1.0" max="8.0">
+      <div class="sliderRegulators" id="sliderVideo2">
+        <p>Volume:</p>
+        <input type="range" class="slider" id="videoVolumeSlider2" value="100" min="0" max="100">
+        <p>Playback speed:</p>
+        <input type="range" class="slider" id="videoPlaybackSpeedSlider2" value="1.0" min="1.0" max="8.0">
+      </div>
     </div>
   </div>
-</div>
-</div>
-
-
-<script>
- function handleFileSelect(event) {
-      var file = event.target.files[0];
-      var videoElementId = event.target.getAttribute('data-video-id');
-      var videoElement = document.getElementById(videoElementId);
-      var videoSource = videoElement.querySelector('source');
-      videoSource.setAttribute('src', URL.createObjectURL(file));
-      videoElement.load();
-    }
-
-    function uploadVideo(event) {
-      var fileInputId = event.target.getAttribute('data-file-input-id');
-      var fileInput = document.getElementById(fileInputId);
-      fileInput.click();
-    }
-
-    var uploadVideoButtons = document.getElementsByClassName('uploadVideoButton');
-    for (var i = 0; i < uploadVideoButtons.length; i++) {
-      uploadVideoButtons[i].addEventListener('click', uploadVideo);
-    }
-
-    var fileInputs = document.querySelectorAll('input[type="file"]');
-    for (var i = 0; i < fileInputs.length; i++) {
-      fileInputs[i].addEventListener('change', handleFileSelect);
-    }
-  
-  // Funktion zum Abspielen aller Videos
-  function playAllVideos() {
-    var videos = document.getElementsByTagName('video');
-    for (var i = 0; i < videos.length; i++) {
-      videos[i].play();
-    }
-  }
-
-  // Funktion zum Pausieren aller Videos
-  function pauseAllVideos() {
-    var videos = document.getElementsByTagName('video');
-    for (var i = 0; i < videos.length; i++) {
-      videos[i].pause();
-    }
-  }
-
-  // Funktion zum Stummschalten aller Videos
-  function muteAllVideos() {
-    var videos = document.getElementsByTagName('video');
-    for (var i = 0; i < videos.length; i++) {
-      videos[i].muted = true;
-    }
-  }
-
-  // Funktion zum Aufheben der Stummschaltung aller Videos
-  function unmuteAllVideos() {
-    var videos = document.getElementsByTagName('video');
-    for (var i = 0; i < videos.length; i++) {
-      videos[i].muted = false;
-    }
-  }
-
-  // Funktion zum Zurücksetzen aller Videos auf den Anfang
-  function resetAllVideos() {
-    var videos = document.getElementsByTagName('video');
-    for (var i = 0; i < videos.length; i++) {
-      videos[i].currentTime = 0;
-    }
-  }
-
-  // Event Listener für den "Play all" Button
-  var playAllButton = document.getElementById('playAllVideo');
-  playAllButton.addEventListener('click', playAllVideos);
-
-  // Event Listener für den "Pause" Button
-  var pauseAllButton = document.getElementById('pauseAllVideo');
-  pauseAllButton.addEventListener('click', pauseAllVideos);
-
-  // Event Listener für den "Mute" Button
-  var muteAllButton = document.getElementById('muteAllVideo');
-  muteAllButton.addEventListener('click', muteAllVideos);
-
-  // Event Listener für den "Unmute" Button
-  var unmuteAllButton = document.getElementById('unmuteAllVideo');
-  unmuteAllButton.addEventListener('click', unmuteAllVideos);
-
-  // Event Listener für den "Reset" Button
-  var resetButton = document.getElementById('resetVideo');
-  resetButton.addEventListener('click', resetAllVideos);
-</script>
-
-
-
+  </div>
 
   <!-- Scripts -->
   <script type="module" src="/index.js"></script>
