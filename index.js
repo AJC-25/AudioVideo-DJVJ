@@ -1,6 +1,11 @@
 // Holen aller Buttons mit class="uploadAudio" => speichern in Array uploadAudioButtons
 let uploadAudioButtons = document.getElementsByClassName('uploadAudio');
 let audioLoadedStatus = {};
+
+// Holen aller Buttons mit class="uploadVideo" => speichern in Array uploadVideoButtons
+let uploadVideoButtons = document.getElementsByClassName('uploadVideo');
+let videoLoadedStatus = {};
+
 // Iterieren über alle Elemente in diesem Array
 for (const button of uploadAudioButtons) {
     button.addEventListener('click', () => {
@@ -18,6 +23,17 @@ for (const button of uploadAudioButtons) {
         }
     }, false);
 }
+
+Array.from(uploadVideoButtons).forEach(button => {
+    button.addEventListener('click', () => {
+        var nrOfVideo = parseInt(button.getAttribute('id'));
+        if (!videoLoadedStatus[nrOfVideo]) {
+            let fileInput = createVideoFileInput(nrOfVideo); // Erstelle das File Input-Element
+            fileInput.addEventListener('change', e => handleVideoFileSelect(e, nrOfVideo), false);
+            fileInput.click(); // Trigger the click event on the file input element
+        }
+    }, false);
+});
 
 // Verarbeiten der ausgewählten Audiodatei
 function handleAudioFileSelect(evt, nrOfSong) {
@@ -50,9 +66,11 @@ function handleAudioFileSelect(evt, nrOfSong) {
         if (audio.paused) {
             audio.play();
             record.style.animationPlayState = 'running';
+            video.play();
         } else {
             audio.pause();
             record.style.animationPlayState = 'paused';
+            video.pause();
         }
     });
 
@@ -82,6 +100,67 @@ function handleAudioFileSelect(evt, nrOfSong) {
     visualizeAudio(audio, nrOfSong);
 }
 
+function createVideoFileInput(nrOfVideo) {
+    let fileInput = document.createElement('input');
+    fileInput.type = 'file';
+    fileInput.accept = 'video/*';
+    fileInput.setAttribute('id', 'videoInput' + nrOfVideo); // Speichere die Nummer des Videos als Attribut
+    //fileInput.addEventListener('change', e => handleVideoFileSelect(e, nrOfVideo), false);
+    return fileInput;
+}
+
+// Verarbeiten der ausgewählten Videodatei
+function handleVideoFileSelect(evt, nrOfVideo) {
+    var videoFile = evt.target.files[0]; // Speichern der ausgewählten Datei mit Index[0] => 1. Datei
+    evt.stopPropagation();
+    evt.preventDefault();
+
+    var videoUrl = URL.createObjectURL(videoFile); // Erstellen des Links zur ausgewählten Video-Datei
+
+    const video = document.createElement('video');
+    const controllerDiv = document.getElementById('videoRegulatorsVideo' + nrOfVideo);
+    controllerDiv.appendChild(video);
+    video.src = videoUrl; // Speichern der URL für das HTML-Videoelement
+
+    videoLoadedStatus[nrOfVideo] = true;
+
+    const playButton = document.getElementById('videoPlayButton' + nrOfVideo);
+    const volumeSlider = document.getElementById('videoVolumeSlider' + nrOfVideo);
+    const playbackSpeedSlider = document.getElementById('videoPlaybackSpeedSlider' + nrOfVideo);
+    const resetButton = document.getElementById('videoResetButton' + nrOfVideo);
+
+    playButton.addEventListener('click', () => {
+        if (video.paused) {
+            video.play();
+        } else {
+            video.pause();
+        }
+    });
+
+    resetButton.addEventListener('click', () => {
+        resetVideoTrack(nrOfVideo);
+    });
+
+    volumeSlider.addEventListener('input', () => {
+        video.volume = volumeSlider.value / 100;
+    });
+
+    playbackSpeedSlider.addEventListener('input', () => {
+        video.playbackRate = playbackSpeedSlider.value;
+    });
+
+    const loopButton = document.getElementById('loopVideoButton' + nrOfVideo);
+
+    loopButton.addEventListener('click', () => {
+        video.loop = !video.loop;
+        if (video.loop) {
+            loopButton.innerHTML = "Unloop";
+        } else {
+            loopButton.innerHTML = "Loop";
+        }
+    });
+}
+
 // Funktion zum Zurücksetzen des hochgeladenen Audiotracks
 function resetAudioTrack(nrOfSong) {
     const record = document.getElementById('record' + nrOfSong);
@@ -107,10 +186,27 @@ function resetAudioTrack(nrOfSong) {
     playbackSpeedSlider.value = 1.0; // Zurücksetzen des Wiedergabegeschwindigkeitssliders
 }
 
+// Funktion zum Zurücksetzen des hochgeladenen Videotracks --> still needs fix
+function resetVideoTrack(nrOfVideo) {
+    const controllerDiv = document.getElementById('videoRegulatorsVideo' + nrOfVideo);
+    const video = document.getElementById('video' + nrOfVideo);
+
+    if (video) {
+        video.pause();
+        video.src = '';
+        video.load();
+        controllerDiv.removeChild(video);
+        delete videoLoadedStatus[nrOfVideo];
+    }
+
+    const volumeSlider = document.getElementById('volumeSlider' + nrOfVideo);
+    const playbackSpeedSlider = document.getElementById('playbackSpeedSlider' + nrOfVideo);
+    volumeSlider.value = 100;
+    playbackSpeedSlider.value = 1.0;
+}
+
 function visualizeAudio(audio, nrOfSong) {
     const canvas = document.getElementById('visualizeAudio' + nrOfSong);
-    /* canvas.width = 1100;
-    canvas.height = 300; */
     const context = canvas.getContext('2d');
     const audioContext = new (window.AudioContext || window.webkitAudioContext)();
     var audioSource = null;
@@ -142,6 +238,3 @@ function visualizeAudio(audio, nrOfSong) {
     }
     animate();
 }
-
-
-
