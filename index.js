@@ -108,7 +108,6 @@ function createVideoFileInput(nrOfVideo) {
     //fileInput.addEventListener('change', e => handleVideoFileSelect(e, nrOfVideo), false);
     return fileInput;
 }
-
 // Verarbeiten der ausgewählten Videodatei
 function handleVideoFileSelect(evt, nrOfVideo) {
     var videoFile = evt.target.files[0]; // Speichern der ausgewählten Datei mit Index[0] => 1. Datei
@@ -186,24 +185,42 @@ function resetAudioTrack(nrOfSong) {
     playbackSpeedSlider.value = 1.0; // Zurücksetzen des Wiedergabegeschwindigkeitssliders
 }
 
-// Funktion zum Zurücksetzen des hochgeladenen Videotracks --> still needs fix
+// Funktion zum Zurücksetzen des hochgeladenen Videotracks
 function resetVideoTrack(nrOfVideo) {
     const controllerDiv = document.getElementById('videoRegulatorsVideo' + nrOfVideo);
     const video = document.getElementById('video' + nrOfVideo);
+    const videoPreview = document.getElementById('videoPreview' + nrOfVideo);
 
     if (video) {
         video.pause();
         video.src = '';
         video.load();
         controllerDiv.removeChild(video);
-        delete videoLoadedStatus[nrOfVideo];
+
+        if (videoPreview) {
+            videoPreview.innerHTML = '';
+        }
     }
 
-    const volumeSlider = document.getElementById('volumeSlider' + nrOfVideo);
-    const playbackSpeedSlider = document.getElementById('playbackSpeedSlider' + nrOfVideo);
+    const volumeSlider = document.getElementById('videoVolumeSlider' + nrOfVideo);
+    const playbackSpeedSlider = document.getElementById('videoPlaybackSpeedSlider' + nrOfVideo);
     volumeSlider.value = 100;
     playbackSpeedSlider.value = 1.0;
 }
+
+// Event Listener für den Reset-Button für Video 1
+const videoResetButton1 = document.getElementById('videoResetButton1');
+videoResetButton1.addEventListener('click', function() {
+    resetVideoTrack(nrOfVideo);
+});
+
+// Event Listener für den Reset-Button für Video 2
+const videoResetButton2 = document.getElementById('videoResetButton2');
+videoResetButton2.addEventListener('click', function() {
+    resetVideoTrack(nrOfVideo);
+});
+
+  
 
 function visualizeAudio(audio, nrOfSong) {
     const canvas = document.getElementById('visualizeAudio' + nrOfSong);
