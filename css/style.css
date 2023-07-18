@@ -1,18 +1,18 @@
-body  {
+body {
     background: #1c1c1c;
     font-family: Verdana, sans-serif;
 }
 
-.headline h3 {
+.headline h3{
     font-size: 4.0em;
     color: #ffffff;
     background: linear-gradient(to right, #61aec7, #ccd400);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
-    margin-bottom: 10px;
+    margin: 50px 0px;
 }
 
-.headline h4 {
+.headline h4{
     font-size: 2em;    
     color: #ffffff;
     margin: 25px 0px;
@@ -21,7 +21,7 @@ body  {
     background: linear-gradient(to right, #61aec7, #ccd400);
 }
 
-.headline h5 {
+.headline h5{
     font-size: 1em;    
     color: #ffffff;
     margin: 10px;
@@ -29,7 +29,7 @@ body  {
     text-align: center;
 }
 
-.grid-container {
+.grid-container{
     display: grid;
     grid-template-columns: auto auto auto auto;
     justify-content: center;
@@ -37,16 +37,16 @@ body  {
 
 /* Audio CSS */
 
-.audioTrack {
+.audioTrack{
     border: #2e2e2e solid;    
     background-color: #1a1a1a;    
     color: #ffffff;
     border-radius: 10px;
-    margin: 10px 0;
+    margin: 10px;
 }
 
-canvas {
-    width: 1100px;
+canvas{
+    width: 500px;
     height: 50px;
     padding: 0 6px;
     margin: 0 auto;
@@ -57,19 +57,11 @@ canvas {
     margin-top: 10px;
 }
 
-#audioRegulatorsAudio1{
-    margin-right: 12px;
-}
-
-#audioRegulatorsAudio2{
-    margin-left: 12px;
-}
-
-.audioRegulators, .videoRegulators, .videoPlayer {
+.audioRegulators, .videoRegulators{
     height: auto;
-    width: 430px;
-    margin:10px 0;    
-    padding: 10px 0px 10px 10px;
+    width: auto;
+    margin:10px auto;    
+    padding: 10px;
     border: #2e2e2e solid;    
     background-color: #1a1a1a;    
     color: #ffffff;
@@ -80,33 +72,10 @@ canvas {
     cursor: pointer;
 }
 
-.audioButton {
+.audioButton{
     height: 30px;
     width: 50px;
     margin-left: 10px;
-}
-
-.switchesForAll{
-    color: #000000;
-    margin-top: 30px;
-}
-
-.switchesForAll button {
-    cursor: pointer;
-    width: 100px;
-    color: #ffffff;
-    text-align: center;
-    margin: 5px;
-    padding: 10px;
-    background-color: transparent;
-    border-style: solid;
-    border-width: 3px;
-    border-image: linear-gradient(to right, #61aec7, #ccd400) 1;
-}
-
-.switchesForAll button:hover{
-    background: linear-gradient(to right, #61aec7, #ccd400);
-    opacity: 1;
 }
 
 .slider{
@@ -142,8 +111,8 @@ canvas {
 
 .record{
     display: inline-block;
-    width: 200px;
-    height: 200px;
+    width: 175px;
+    height: 175px;
     background-image: url(https://pngimg.com/uploads/vinyl/vinyl_PNG5.png);
     background-size: cover;
     animation-name: rotation;
@@ -151,10 +120,10 @@ canvas {
     animation-timing-function: linear;
     animation-iteration-count: infinite;
     animation-play-state: paused;
-    margin-top: 50px;
+    margin: 15px 10px;
 }
 
-@keyframes rotation {
+@keyframes rotation{
     from {
         transform: rotate(0deg);
     }
@@ -165,50 +134,46 @@ canvas {
 
 /* Video CSS */
 
-/* .videoPlayer{
-    height: 150px;
-    width: 430px;
-    margin: 10px 0;
+.videoPlayer{
+    height: 100px;
+    width: 100px;
+    margin: 10px auto;    
+    padding: 10px;
+    border: #2e2e2e solid;    
+    background-color: #1a1a1a;    
+    color: #ffffff;
+    border-radius: 10px;
+}
+
+.resultVideo{
+    height: 300px;
+    width: 1050px;
+    margin: 10px 35px;
     padding: 10px 0;
     border: #2e2e2e solid;    
     background-color: #1a1a1a;    
     color: #ffffff;
     border-radius: 10px;
-} */
-
-#VideoOne{
-    margin-right: 124px;
 }
 
-#VideoTwo{
-    margin-left: 124px;
+#chromaSlider{
+    width: 50%;
+    margin: 0px auto;
 }
 
-.videoRegulators button{
-    cursor: pointer;
+#chromaSliderBox{
+    border: none;
+    background-color: transparent;
+    margin: 0px auto;
+    text-align: center;
 }
 
 #loadVideoSamples1{
-    margin-right: 124px;
+    cursor: pointer;
+    margin-top: 20px;
 }
 
 #loadVideoSamples2{
-    margin-left: 124px;
+    cursor: pointer;
+    margin-top: 20px;
 }
-
-.videoButton{
-    height: 30px;
-    width: 50px;
-    margin-left: 10px;
-}
-
-#audioRegulatorsVideoOne{
-    margin-right: 12px;
-}
-
-#audioRegulatorsVideoTwo{
-    margin-left: 12px;
-}
-
-
-
