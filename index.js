@@ -110,16 +110,18 @@ function createVideoFileInput(nrOfVideo) {
 }
 // Verarbeiten der ausgewählten Videodatei
 function handleVideoFileSelect(evt, nrOfVideo) {
-    var videoFile = evt.target.files[0]; // Speichern der ausgewählten Datei mit Index[0] => 1. Datei
+    var videoFile = evt.target.files[0];
     evt.stopPropagation();
     evt.preventDefault();
 
-    var videoUrl = URL.createObjectURL(videoFile); // Erstellen des Links zur ausgewählten Video-Datei
+    var videoUrl = URL.createObjectURL(videoFile);
 
     const video = document.createElement('video');
-    const controllerDiv = document.getElementById('videoRegulatorsVideo' + nrOfVideo);
-    controllerDiv.appendChild(video);
-    video.src = videoUrl; // Speichern der URL für das HTML-Videoelement
+    const videoPlayer = document.getElementById(nrOfVideo === 1 ? 'VideoOne' : 'VideoTwo');
+    videoPlayer.innerHTML = ''; 
+    videoPlayer.appendChild(video); 
+    video.src = videoUrl;
+    video.autoplay = false; 
 
     videoLoadedStatus[nrOfVideo] = true;
 
@@ -207,6 +209,24 @@ function resetVideoTrack(nrOfVideo) {
     volumeSlider.value = 100;
     playbackSpeedSlider.value = 1.0;
 }
+
+// Event listener for "Load Video 1" button
+const loadVideoButton1 = document.getElementById('loadVideoSamples1');
+loadVideoButton1.addEventListener('click', () => {
+    const videoInput1 = document.getElementById('videoInput1');
+    if (!videoLoadedStatus[1]) {
+        videoInput1.click();
+    }
+});
+
+// Event listener for "Load Video 2" button
+const loadVideoButton2 = document.getElementById('loadVideoSamples2');
+loadVideoButton2.addEventListener('click', () => {
+    const videoInput2 = document.getElementById('videoInput2');
+    if (!videoLoadedStatus[2]) {
+        videoInput2.click();
+    }
+});
 
 // Event Listener für den Reset-Button für Video 1
 const videoResetButton1 = document.getElementById('videoResetButton1');
