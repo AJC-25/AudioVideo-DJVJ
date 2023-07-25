@@ -1,179 +1,155 @@
-// Holen aller Buttons mit class="uploadAudio" => speichern in Array uploadAudioButtons
+// Holen aller Buttons mit class="uploadAudio" und class="uploadVideo" => speichern in Array uploadButtons
 let uploadAudioButtons = document.getElementsByClassName('uploadAudio');
-let audioLoadedStatus = {};
-
-// Holen aller Buttons mit class="uploadVideo" => speichern in Array uploadVideoButtons
 let uploadVideoButtons = document.getElementsByClassName('uploadVideo');
+let uploadButtons = [...uploadAudioButtons, ...uploadVideoButtons]; //Convert HTMLCollection to array
+let audioLoadedStatus = {};
 let videoLoadedStatus = {};
 
-// Iterieren über alle Elemente in diesem Array
-for (const button of uploadAudioButtons) {
-    button.addEventListener('click', () => {
-        // Wenn angeklickt wurde des Attribut id des Buttons holen und String umwandeln in Int
-        var nrOfSong = parseInt(button.getAttribute('id'));
-        // Abfangen, ob in der Spur bereits eine Audiodatei hochgeladen wurde
-        if (!audioLoadedStatus[nrOfSong]) {
-            // input-Element (html) erstellen und konfigurieren
-            let inputFile = document.createElement('input');
-            inputFile.type = 'file';
-            inputFile.accept = 'audio/*';
-            // Hinzufügen Eventlistener, der auf Auswahl einer Datei reagiert
-            inputFile.addEventListener('change', e => handleAudioFileSelect(e, nrOfSong), false);
-            inputFile.click();
-        }
-    }, false);
-}
 
-Array.from(uploadVideoButtons).forEach(button => {
+uploadButtons.forEach(button => {
     button.addEventListener('click', () => {
-        var nrOfVideo = parseInt(button.getAttribute('id'));
-        if (!videoLoadedStatus[nrOfVideo]) {
-            let fileInput = createVideoFileInput(nrOfVideo); // Erstelle das File Input-Element
-            fileInput.addEventListener('change', e => handleVideoFileSelect(e, nrOfVideo), false);
+        var nr = parseInt(button.getAttribute('id'));
+        let fileType = button.classList.contains('uploadAudio') ? 'audio' : 'video';
+
+        if (!isFileLoaded(fileType, nr)) {
+            let fileInput = createFileInput(fileType, nr); // Erstelle das File Input-Element
+            fileInput.addEventListener('change', e => handleFileSelect(e, fileType, nr), false);
             fileInput.click(); // Trigger the click event on the file input element
         }
     }, false);
 });
 
-// Verarbeiten der ausgewählten Audiodatei
-function handleAudioFileSelect(evt, nrOfSong) {
-    //console.log(nrOfSong);
-    var audioFile = evt.target.files[0]; // Speichern der ausgewählten Datei mit Index[0] => 1. Datei
+function isFileLoaded(fileType, nr) {
+    if (fileType === 'audio') {
+        return audioLoadedStatus[nr];
+    } else if (fileType === 'video') {
+        return videoLoadedStatus[nr];
+    }
+    return false;
+}
+
+function createFileInput(type, nr) {
+    let fileInput = document.createElement('input');
+    fileInput.type = 'file';
+    fileInput.accept = type === 'audio' ? 'audio/*' : 'video/*';
+    fileInput.setAttribute('id', type === 'audio' ? 'audioInput' + nr : 'videoInput' + nr); // Speichere die Nummer des Videos als Attribut
+    return fileInput; 0
+}
+
+// Verarbeiten der ausgewählten Videodatei
+function handleFileSelect(evt, type, nr) {
+    var file = evt.target.files[0];
     evt.stopPropagation();
     evt.preventDefault();
 
-    var audioUrl = URL.createObjectURL(audioFile); // Erstellen Link zur ausgewählten Audio-Datei
-    const audio = document.createElement('audio');
-    audio.id = 'audio' + nrOfSong;
-    const controllerDiv = document.getElementById('audioRegulatorsAudio' + nrOfSong);
-    controllerDiv.appendChild(audio); // Speichern, der Audiodatei in controllerDiv
-    //audio.controls = false; // Anzeigen von automatisch generierter Leiste (Start/Stop-Knopf, Lautstärkeregler)
-    audio.src = audioUrl; // Speichern der URL für html audio ELement
+    var fileUrl = URL.createObjectURL(file);
 
-    audioLoadedStatus[nrOfSong] = true;
+    if (type === 'audio') {
+        const audio = document.createElement('audio');
+        audio.id = 'audio' + nr;
+        const controllerDiv = document.getElementById('audioRegulatorsAudio' + nr);
+        controllerDiv.appendChild(audio); // Speichern, der Audiodatei in controllerDiv
+        //audio.controls = false; // Anzeigen von automatisch generierter Leiste (Start/Stop-Knopf, Lautstärkeregler)
 
-    const playButton = document.getElementById('playButton' + nrOfSong);
-    const volumeSlider = document.getElementById('volumeSlider' + nrOfSong);
-    const playbackSpeedSlider = document.getElementById('playbackSpeedSlider' + nrOfSong);
-    const record = document.getElementById('record' + nrOfSong);
-    const resetButton = document.getElementById('resetButton' + nrOfSong);
+        audio.src = fileUrl; // Speichern der URL für html audio ELement
+
+        audioLoadedStatus[nr] = true;
+
+
+        visualizeAudio(audio, nr);
+        // visualizeAudioWaveform(audio, nr);
+
+    } else if (type === 'video') {
+        const video = document.createElement('video');
+        video.id = 'uploadedVideo' + nr;
+        video.src = fileUrl; // Save the URL for the html video element
+        video.autoplay = false;
+        console.log('foundCorrectVideo' + nr);
+
+        const videoPlayer = document.getElementById('videoPlayer' + nr);
+        if (videoPlayer) {
+            videoPlayer.innerHTML = '';
+            videoPlayer.appendChild(video);
+            videoLoadedStatus[nr] = true;
+        }
+    }
+    //Add audio logic
+    const uploadedVideo = document.getElementById('uploadedVideo' + nr);
+    const audioTrack = document.getElementById('audio' + nr);
+    const playButton = document.getElementById('playButton' + nr);
+    const volumeSlider = document.getElementById('volumeSlider' + nr);
+    const playbackSpeedSlider = document.getElementById('playbackSpeedSlider' + nr);
+    const record = document.getElementById('record' + nr);
+    const resetButton = document.getElementById('resetButton' + nr);
+    const canvas = document.getElementById('videoPlayer' + nr);
     // const playAllButton
 
     console.log(playButton);
     console.log(volumeSlider);
+    console.log(uploadedVideo);
+    console.log(audioTrack);
+    uploadedVideo.volume = 0.0; //mute video
 
     playButton.addEventListener('click', () => {
-        if (audio.paused) {
-            audio.play();
+        console.log(audioTrack);
+        if (audioTrack.paused || uploadedVideo.paused) {
+            audioTrack.play();
             record.style.animationPlayState = 'running';
-            video.play();
+            uploadedVideo.play();
         } else {
-            audio.pause();
+            audioTrack.pause();
             record.style.animationPlayState = 'paused';
-            video.pause();
+            uploadedVideo.pause();
         }
     });
 
     resetButton.addEventListener('click', () => {
-        resetAudioTrack(nrOfSong);
+        resetAudioTrack(nr); // Funktion zum Zurücksetzen des Audiotracks
+        resetVideoTrack(nr);
+        const context = canvas.getContext('2d');
+        context.clearRect(0, 0, canvas.width, canvas.height); // Leeren des Waveform-Canvas
     });
 
+
     volumeSlider.addEventListener('input', () => {
-        audio.volume = volumeSlider.value / 100;
+        audioTrack.volume = volumeSlider.value / 100;
     });
 
     playbackSpeedSlider.addEventListener('input', () => {
-        audio.playbackRate = playbackSpeedSlider.value;
+        audioTrack.playbackRate = playbackSpeedSlider.value;
+        uploadedVideo.playbackRate = playbackSpeedSlider.value;
     });
 
-    const loopButton = document.getElementById('loopAudioButton' + nrOfSong);
+    const loopButton = document.getElementById('loopButton' + nr);
 
     loopButton.addEventListener('click', () => {
-        audio.loop = !audio.loop; // Setze den Wert, ob audio loopt immer auf den gegensätzlichen Wert (true -> false, false -> true)
-        if (audio.loop) { // Wenn alle Elemente true sind
+        audioTrack.loop = !audioTrack.loop; // Setze den Wert, ob audio loopt immer auf den gegensätzlichen Wert (true -> false, false -> true)
+        if (audioTrack.loop) { // Wenn alle Elemente true sind
             loopButton.firstElementChild.innerHTML = "Unloop";
         } else {
             loopButton.firstElementChild.innerHTML = "Loop";
         }
-    })
-
-    visualizeAudio(audio, nrOfSong);
-}
-
-function createVideoFileInput(nrOfVideo) {
-    let fileInput = document.createElement('input');
-    fileInput.type = 'file';
-    fileInput.accept = 'video/*';
-    fileInput.setAttribute('id', 'videoInput' + nrOfVideo); // Speichere die Nummer des Videos als Attribut
-    //fileInput.addEventListener('change', e => handleVideoFileSelect(e, nrOfVideo), false);
-    return fileInput;
-}
-// Verarbeiten der ausgewählten Videodatei
-function handleVideoFileSelect(evt, nrOfVideo) {
-    var videoFile = evt.target.files[0];
-    evt.stopPropagation();
-    evt.preventDefault();
-
-    var videoUrl = URL.createObjectURL(videoFile);
-
-    const video = document.createElement('video');
-    const videoPlayer = document.getElementById(nrOfVideo === 1 ? 'VideoOne' : 'VideoTwo');
-    videoPlayer.innerHTML = ''; 
-    videoPlayer.appendChild(video); 
-    video.src = videoUrl;
-    video.autoplay = false; 
-
-    videoLoadedStatus[nrOfVideo] = true;
-
-    const playButton = document.getElementById('videoPlayButton' + nrOfVideo);
-    const volumeSlider = document.getElementById('videoVolumeSlider' + nrOfVideo);
-    const playbackSpeedSlider = document.getElementById('videoPlaybackSpeedSlider' + nrOfVideo);
-    const resetButton = document.getElementById('videoResetButton' + nrOfVideo);
-
-    playButton.addEventListener('click', () => {
-        if (video.paused) {
-            video.play();
-        } else {
-            video.pause();
-        }
-    });
-
-    resetButton.addEventListener('click', () => {
-        resetVideoTrack(nrOfVideo);
-    });
-
-    volumeSlider.addEventListener('input', () => {
-        video.volume = volumeSlider.value / 100;
-    });
-
-    playbackSpeedSlider.addEventListener('input', () => {
-        video.playbackRate = playbackSpeedSlider.value;
-    });
-
-    const loopButton = document.getElementById('loopVideoButton' + nrOfVideo);
-
-    loopButton.addEventListener('click', () => {
-        video.loop = !video.loop;
-        if (video.loop) {
+        uploadedVideo.loop = !uploadedVideo.loop;
+        if (uploadedVideo.loop) {
             loopButton.innerHTML = "Unloop";
         } else {
             loopButton.innerHTML = "Loop";
         }
-    });
+    })
 }
 
 // Funktion zum Zurücksetzen des hochgeladenen Audiotracks
-function resetAudioTrack(nrOfSong) {
-    const record = document.getElementById('record' + nrOfSong);
-    const controllerDiv = document.getElementById('audioRegulatorsAudio' + nrOfSong);
-    const audio = document.getElementById('audio' + nrOfSong);
+function resetAudioTrack(nr) {
+    const record = document.getElementById('record' + nr);
+    const controllerDiv = document.getElementById('audioRegulatorsAudio' + nr);
+    const audio = document.getElementById('audio' + nr);
 
     if (audio) {
         audio.pause();
         audio.src = ''; // Leeren der src, um Audio zu stoppen und von URL zu lösen
         audio.load(); // Neuladen der Audio
         controllerDiv.removeChild(audio);
-        delete audioLoadedStatus[nrOfSong];
+        delete audioLoadedStatus[nr];
     }
 
     // Animation der Schallplatte pausieren
@@ -181,69 +157,28 @@ function resetAudioTrack(nrOfSong) {
     record.offsetHeight;
 
     // Reglerwerte zurücksetzen
-    const volumeSlider = document.getElementById('volumeSlider' + nrOfSong);
-    const playbackSpeedSlider = document.getElementById('playbackSpeedSlider' + nrOfSong);
+    const volumeSlider = document.getElementById('volumeSlider' + nr);
+    const playbackSpeedSlider = document.getElementById('playbackSpeedSlider' + nr);
     volumeSlider.value = 100; // Zurücksetzen der Lautstärke
     playbackSpeedSlider.value = 1.0; // Zurücksetzen des Wiedergabegeschwindigkeitssliders
 }
 
-// Funktion zum Zurücksetzen des hochgeladenen Videotracks
-function resetVideoTrack(nrOfVideo) {
-    const controllerDiv = document.getElementById('videoRegulatorsVideo' + nrOfVideo);
-    const video = document.getElementById('video' + nrOfVideo);
-    const videoPreview = document.getElementById('videoPreview' + nrOfVideo);
-
-    if (video) {
-        video.pause();
-        video.src = '';
-        video.load();
-        controllerDiv.removeChild(video);
-
-        if (videoPreview) {
-            videoPreview.innerHTML = '';
+function resetVideoTrack(nr) {
+    const videoPlayer = document.getElementById('videoPlayer' + nr);
+    if (videoPlayer) {
+        const video = videoPlayer.querySelector('video');
+        if (video) {
+            video.pause();
+            video.src = ''; // Leeren der src, um Video zu stoppen und von URL zu lösen
+            video.load(); // Neuladen des Videos
         }
+        delete videoLoadedStatus[nr];
+        console.log(videoPlayer);
     }
-
-    const volumeSlider = document.getElementById('videoVolumeSlider' + nrOfVideo);
-    const playbackSpeedSlider = document.getElementById('videoPlaybackSpeedSlider' + nrOfVideo);
-    volumeSlider.value = 100;
-    playbackSpeedSlider.value = 1.0;
 }
 
-// Event listener for "Load Video 1" button
-const loadVideoButton1 = document.getElementById('loadVideoSamples1');
-loadVideoButton1.addEventListener('click', () => {
-    const videoInput1 = document.getElementById('videoInput1');
-    if (!videoLoadedStatus[1]) {
-        videoInput1.click();
-    }
-});
-
-// Event listener for "Load Video 2" button
-const loadVideoButton2 = document.getElementById('loadVideoSamples2');
-loadVideoButton2.addEventListener('click', () => {
-    const videoInput2 = document.getElementById('videoInput2');
-    if (!videoLoadedStatus[2]) {
-        videoInput2.click();
-    }
-});
-
-// Event Listener für den Reset-Button für Video 1
-const videoResetButton1 = document.getElementById('videoResetButton1');
-videoResetButton1.addEventListener('click', function() {
-    resetVideoTrack(nrOfVideo);
-});
-
-// Event Listener für den Reset-Button für Video 2
-const videoResetButton2 = document.getElementById('videoResetButton2');
-videoResetButton2.addEventListener('click', function() {
-    resetVideoTrack(nrOfVideo);
-});
-
-  
-
-function visualizeAudio(audio, nrOfSong) {
-    const canvas = document.getElementById('visualizeAudio' + nrOfSong);
+function visualizeAudio(audio, nr) {
+    const canvas = document.getElementById('visualizeAudio' + nr);
     const context = canvas.getContext('2d');
     const audioContext = new (window.AudioContext || window.webkitAudioContext)();
     var audioSource = null;
