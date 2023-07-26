@@ -205,58 +205,6 @@ loopButton.addEventListener('click', () => {
     }
 })
 
-/* const videoPlayer = document.getElementById('Video' + nr);
-if (videoPlayer) {
-    videoPlayer.innerHTML = '';
-    videoPlayer.appendChild(video);
-    videoLoadedStatus[nr] = true;
-    //Video control logic
-    // const playButton = document.getElementById('playButton' + nr);
-    const volumeSlider = document.getElementById('videoVolumeSlider' + nr);
-    const playbackSpeedSlider = document.getElementById('videoPlaybackSpeedSlider' + nr);
-    //const resetButton = document.getElementById('videoResetButton' + nr);
-
-    /*  playButton.addEventListener('click', () => {
-         if (video.paused) {
-             video.play();
-         } else {
-             video.pause();
-         }
-     }); 
-
-const videoResetButton1 = document.getElementById('resetButton1');
-videoResetButton1.addEventListener('click', function () {
-    resetVideoTrack(1);
-})
-
-const videoResetButton2 = document.getElementById('resetButton2');
-videoResetButton2.addEventListener('click', function () {
-    resetVideoTrack(2);
-})
-
-/*    resetButton.addEventListener('click', () => {
-       resetVideoTrack(nr);
-   });
-
-volumeSlider.addEventListener('input', () => {
-    video.volume = volumeSlider.value / 100;
-});
-
-playbackSpeedSlider.addEventListener('input', () => {
-    video.playbackRate = playbackSpeedSlider.value;
-});
-
-const loopButton = document.getElementById('loopVideoButton' + nr);
-
-loopButton.addEventListener('click', () => {
-    video.loop = !video.loop;
-    if (video.loop) {
-        loopButton.innerHTML = "Unloop";
-    } else {
-        loopButton.innerHTML = "Loop";
-    }
-});
-} */
 
 // Funktion zum Zurücksetzen des hochgeladenen Audiotracks
 function resetAudioTrack(nr) {
