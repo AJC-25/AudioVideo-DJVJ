@@ -36,7 +36,6 @@ function createFileInput(type, nr) {
     return fileInput; 0
 }
 
-// Verarbeiten der ausgewählten Videodatei
 function handleFileSelect(evt, type, nr) {
     var file = evt.target.files[0];
     evt.stopPropagation();
@@ -55,93 +54,156 @@ function handleFileSelect(evt, type, nr) {
 
         audioLoadedStatus[nr] = true;
 
-
         visualizeAudio(audio, nr);
         // visualizeAudioWaveform(audio, nr);
 
+        //Add audio logic
+        const uploadedVideo = document.getElementById('uploadedVideo' + nr);
+        const audioTrack = document.getElementById('audio' + nr);
+        const playButton = document.getElementById('playButton' + nr);
+        const volumeSlider = document.getElementById('volumeSlider' + nr);
+        const playbackSpeedSlider = document.getElementById('playbackSpeedSlider' + nr);
+        const record = document.getElementById('record' + nr);
+        const resetButton = document.getElementById('resetButton' + nr);
+        const canvas = document.getElementById('videoPlayer' + nr);
+
+        console.log(playButton);
+        console.log(volumeSlider);
+        console.log(uploadedVideo);
+        console.log(audioTrack);
+        uploadedVideo.volume = 0.0; //mute video
+
+        playButton.addEventListener('click', () => {
+            console.log(audioTrack);
+            if (audioTrack.paused || uploadedVideo.paused) {
+                audioTrack.play();
+                record.style.animationPlayState = 'running';
+                uploadedVideo.play();
+            } else {
+                audioTrack.pause();
+                record.style.animationPlayState = 'paused';
+                uploadedVideo.pause();
+            }
+        });
+
+        resetButton.addEventListener('click', () => {
+            resetAudioTrack(nr); // Funktion zum Zurücksetzen des Audiotracks
+            resetVideoTrack(nr);
+            const context = canvas.getContext('2d');
+            context.clearRect(0, 0, canvas.width, canvas.height); // Leeren des Waveform-Canvas
+        });
+
+        volumeSlider.addEventListener('input', () => {
+            audioTrack.volume = volumeSlider.value / 100;
+        });
+
+        playbackSpeedSlider.addEventListener('input', () => {
+            audioTrack.playbackRate = playbackSpeedSlider.value;
+            uploadedVideo.playbackRate = playbackSpeedSlider.value;
+        });
+
+        const loopButton = document.getElementById('loopButton' + nr);
+
+        loopButton.addEventListener('click', () => {
+            audioTrack.loop = !audioTrack.loop; // Set the value whether audio loops always to the opposite value (true -> false, false -> true)
+            if (audioTrack.loop) {
+                console.log("Audio is looping");
+            } else {
+                console.log("Audio is not looping");
+            }
+            uploadedVideo.loop = !uploadedVideo.loop;
+            if (uploadedVideo.loop) {
+                console.log("Video is looping");
+            } else {
+                console.log("Video is not looping");
+            }
+        });
     } else if (type === 'video') {
         const video = document.createElement('video');
         video.id = 'uploadedVideo' + nr;
-        video.src = fileUrl; // Save the URL for the html video element
+        video.src = fileUrl;
         video.autoplay = false;
-        console.log('foundCorrectVideo' + nr);
 
-        const videoPlayer = document.getElementById('videoPlayer' + nr);
-        if (videoPlayer) {
-            videoPlayer.innerHTML = '';
-            videoPlayer.appendChild(video);
-            videoLoadedStatus[nr] = true;
+        // Video laden und dann die drawVideos-Funktion aufrufen
+        video.addEventListener('loadedmetadata', () => {
+            const videoPlayer = document.getElementById('videoPlayer' + nr);
+            if (videoPlayer) {
+                videoPlayer.innerHTML = '';
+                videoPlayer.appendChild(video);
+                videoLoadedStatus[nr] = true;
 
-
-            if (Object.keys(videoLoadedStatus).length === 2) {
-                overlayVideos();
+                // Prüfen, ob beide Videos geladen sind und dann die overlayVideos-Funktion aufrufen
+                if (Object.keys(videoLoadedStatus).length === 2) {
+                    overlayVideos();
+                }
             }
-        }
+        });
     }
-    //Add audio logic
-    const uploadedVideo = document.getElementById('uploadedVideo' + nr);
-    const audioTrack = document.getElementById('audio' + nr);
-    const playButton = document.getElementById('playButton' + nr);
-    const volumeSlider = document.getElementById('volumeSlider' + nr);
-    const playbackSpeedSlider = document.getElementById('playbackSpeedSlider' + nr);
-    const record = document.getElementById('record' + nr);
-    const resetButton = document.getElementById('resetButton' + nr);
-    const canvas = document.getElementById('videoPlayer' + nr);
-    // const playAllButton
-
-    console.log(playButton);
-    console.log(volumeSlider);
-    console.log(uploadedVideo);
-    console.log(audioTrack);
-    uploadedVideo.volume = 0.0; //mute video
-
-    playButton.addEventListener('click', () => {
-        console.log(audioTrack);
-        if (audioTrack.paused || uploadedVideo.paused) {
-            audioTrack.play();
-            record.style.animationPlayState = 'running';
-            uploadedVideo.play();
-        } else {
-            audioTrack.pause();
-            record.style.animationPlayState = 'paused';
-            uploadedVideo.pause();
-        }
-    });
-
-    resetButton.addEventListener('click', () => {
-        resetAudioTrack(nr); // Funktion zum Zurücksetzen des Audiotracks
-        resetVideoTrack(nr);
-        const context = canvas.getContext('2d');
-        context.clearRect(0, 0, canvas.width, canvas.height); // Leeren des Waveform-Canvas
-    });
-
-
-    volumeSlider.addEventListener('input', () => {
-        audioTrack.volume = volumeSlider.value / 100;
-    });
-
-    playbackSpeedSlider.addEventListener('input', () => {
-        audioTrack.playbackRate = playbackSpeedSlider.value;
-        uploadedVideo.playbackRate = playbackSpeedSlider.value;
-    });
-
-    const loopButton = document.getElementById('loopButton' + nr);
-
-    loopButton.addEventListener('click', () => {
-        audioTrack.loop = !audioTrack.loop; // Setze den Wert, ob audio loopt immer auf den gegensätzlichen Wert (true -> false, false -> true)
-        if (audioTrack.loop) { // Wenn alle Elemente true sind
-            loopButton.firstElementChild.innerHTML = "Unloop";
-        } else {
-            loopButton.firstElementChild.innerHTML = "Loop";
-        }
-        uploadedVideo.loop = !uploadedVideo.loop;
-        if (uploadedVideo.loop) {
-            loopButton.innerHTML = "Unloop";
-        } else {
-            loopButton.innerHTML = "Loop";
-        }
-    })
 }
+
+//Add audio logic
+const uploadedVideo = document.getElementById('uploadedVideo' + nr);
+const audioTrack = document.getElementById('audio' + nr);
+const playButton = document.getElementById('playButton' + nr);
+const volumeSlider = document.getElementById('volumeSlider' + nr);
+const playbackSpeedSlider = document.getElementById('playbackSpeedSlider' + nr);
+const record = document.getElementById('record' + nr);
+const resetButton = document.getElementById('resetButton' + nr);
+const canvas = document.getElementById('videoPlayer' + nr);
+// const playAllButton
+
+console.log(playButton);
+console.log(volumeSlider);
+console.log(uploadedVideo);
+console.log(audioTrack);
+uploadedVideo.volume = 0.0; //mute video
+
+playButton.addEventListener('click', () => {
+    console.log(audioTrack);
+    if (audioTrack.paused || uploadedVideo.paused) {
+        audioTrack.play();
+        record.style.animationPlayState = 'running';
+        uploadedVideo.play();
+    } else {
+        audioTrack.pause();
+        record.style.animationPlayState = 'paused';
+        uploadedVideo.pause();
+    }
+});
+
+resetButton.addEventListener('click', () => {
+    resetAudioTrack(nr); // Funktion zum Zurücksetzen des Audiotracks
+    resetVideoTrack(nr);
+    const context = canvas.getContext('2d');
+    context.clearRect(0, 0, canvas.width, canvas.height); // Leeren des Waveform-Canvas
+});
+
+
+volumeSlider.addEventListener('input', () => {
+    audioTrack.volume = volumeSlider.value / 100;
+});
+
+playbackSpeedSlider.addEventListener('input', () => {
+    audioTrack.playbackRate = playbackSpeedSlider.value;
+    uploadedVideo.playbackRate = playbackSpeedSlider.value;
+});
+
+const loopButton = document.getElementById('loopButton' + nr);
+
+loopButton.addEventListener('click', () => {
+    audioTrack.loop = !audioTrack.loop; // Setze den Wert, ob audio loopt immer auf den gegensätzlichen Wert (true -> false, false -> true)
+    if (audioTrack.loop) { // Wenn alle Elemente true sind
+        loopButton.firstElementChild.innerHTML = "Unloop";
+    } else {
+        loopButton.firstElementChild.innerHTML = "Loop";
+    }
+    uploadedVideo.loop = !uploadedVideo.loop;
+    if (uploadedVideo.loop) {
+        loopButton.innerHTML = "Unloop";
+    } else {
+        loopButton.innerHTML = "Loop";
+    }
+})
 
 /* const videoPlayer = document.getElementById('Video' + nr);
 if (videoPlayer) {
@@ -299,9 +361,12 @@ function overlayVideos() {
 
         ctx.drawImage(video1Filtered, 0, 0, canvas.width, canvas.height);
 
+        // Apply Chromakeying to Video2 based on the checkboxes
+        let video2Filtered = applyChromakey(video2, video2RedCheckbox.checked, video2GreenCheckbox.checked, video2BlueCheckbox.checked);
+
         const alpha = parseFloat(chromaSlider.value) / 100;
         ctx.globalAlpha = alpha;
-        ctx.drawImage(video2, 0, 0, canvas.width, canvas.height);
+        ctx.drawImage(video2Filtered, 0, 0, canvas.width, canvas.height);
         ctx.globalAlpha = 1;
 
         requestAnimationFrame(drawVideos);
@@ -330,6 +395,33 @@ function overlayVideos() {
             if (blue) {
                 data[i] = 0; // Set red channel to 0
                 data[i + 1] = 0; // Set green channel to 0
+            }
+        }
+
+        tempCtx.putImageData(imageData, 0, 0);
+        return tempCanvas;
+    }
+
+    // Function to apply Chromakeying to the video based on checkbox states
+    function applyChromakey(video, red, green, blue) {
+        const tempCanvas = document.createElement('canvas');
+        const tempCtx = tempCanvas.getContext('2d');
+        tempCanvas.width = video.videoWidth;
+        tempCanvas.height = video.videoHeight;
+        tempCtx.drawImage(video, 0, 0, tempCanvas.width, tempCanvas.height);
+
+        const imageData = tempCtx.getImageData(0, 0, tempCanvas.width, tempCanvas.height);
+        const data = imageData.data;
+
+        for (let i = 0; i < data.length; i += 4) {
+            if (red && data[i] > data[i + 1] && data[i] > data[i + 2]) {
+                data[i + 3] = 0; // Set alpha channel to 0
+            }
+            if (green && data[i + 1] > data[i] && data[i + 1] > data[i + 2]) {
+                data[i + 3] = 0; // Set alpha channel to 0
+            }
+            if (blue && data[i + 2] > data[i] && data[i + 2] > data[i + 1]) {
+                data[i + 3] = 0; // Set alpha channel to 0
             }
         }
 
