@@ -1,20 +1,22 @@
-// Holen aller Buttons mit class="uploadAudio" und class="uploadVideo" => speichern in Array uploadButtons
+//Get all buttons with class="uploadAudio" and class="uploadVideo" => save in Array uploadButtons
 let uploadAudioButtons = document.getElementsByClassName('uploadAudio');
 let uploadVideoButtons = document.getElementsByClassName('uploadVideo');
 let uploadButtons = [...uploadAudioButtons, ...uploadVideoButtons]; //Convert HTMLCollection to array
 let audioLoadedStatus = {};
 let videoLoadedStatus = {};
 
-
+/*When upload button is clicked check whether file of corresponding type has already been loaded. 
+If not create file input element and trigger click event 
+prompt user to select a file of the specified type (audio or video)*/
 uploadButtons.forEach(button => {
     button.addEventListener('click', () => {
         var nr = parseInt(button.getAttribute('id'));
         let fileType = button.classList.contains('uploadAudio') ? 'audio' : 'video';
 
         if (!isFileLoaded(fileType, nr)) {
-            let fileInput = createFileInput(fileType, nr); // Erstelle das File Input-Element
+            let fileInput = createFileInput(fileType, nr); //create File Input-Element
             fileInput.addEventListener('change', e => handleFileSelect(e, fileType, nr), false);
-            fileInput.click(); // Trigger the click event on the file input element
+            fileInput.click(); //trigger the click event on the file input element
         }
     }, false);
 });
@@ -32,11 +34,11 @@ function createFileInput(type, nr) {
     let fileInput = document.createElement('input');
     fileInput.type = 'file';
     fileInput.accept = type === 'audio' ? 'audio/*' : 'video/*';
-    fileInput.setAttribute('id', type === 'audio' ? 'audioInput' + nr : 'videoInput' + nr); // Speichere die Nummer des Videos als Attribut
+    fileInput.setAttribute('id', type === 'audio' ? 'audioInput' + nr : 'videoInput' + nr); //save numbers of videos as attributes
     return fileInput; 0
 }
 
-// Verarbeiten der ausgewählten Videodatei
+// Process chosen video file
 function handleFileSelect(evt, type, nr) {
     var file = evt.target.files[0];
     evt.stopPropagation();
@@ -48,10 +50,10 @@ function handleFileSelect(evt, type, nr) {
         const audio = document.createElement('audio');
         audio.id = 'audio' + nr;
         const controllerDiv = document.getElementById('audioRegulatorsAudio' + nr);
-        controllerDiv.appendChild(audio); // Speichern, der Audiodatei in controllerDiv
-        //audio.controls = false; // Anzeigen von automatisch generierter Leiste (Start/Stop-Knopf, Lautstärkeregler)
+        controllerDiv.appendChild(audio); // save audio file in controllerDiv
+        //audio.controls = false; // Display of automatically generated bar (Start/Stop button, volume control)
 
-        audio.src = fileUrl; // Speichern der URL für html audio ELement
+        audio.src = fileUrl; // Save URL for html audio ELement
 
         audioLoadedStatus[nr] = true;
 
@@ -95,6 +97,9 @@ function handleFileSelect(evt, type, nr) {
     console.log(audioTrack);
     uploadedVideo.volume = 0.0; //mute video
 
+    /*if play button is clicked check if either the audioTrack or the uploadedVideo is currently paused
+    If at least one of is paused play audio and animate record
+    */
     playButton.addEventListener('click', () => {
         console.log(audioTrack);
         if (audioTrack.paused || uploadedVideo.paused) {
@@ -108,11 +113,12 @@ function handleFileSelect(evt, type, nr) {
         }
     });
 
+    //Function to reset the audio track
     resetButton.addEventListener('click', () => {
-        resetAudioTrack(nr); // Funktion zum Zurücksetzen des Audiotracks
+        resetAudioTrack(nr); 
         resetVideoTrack(nr);
         const context = canvas.getContext('2d');
-        context.clearRect(0, 0, canvas.width, canvas.height); // Leeren des Waveform-Canvas
+        context.clearRect(0, 0, canvas.width, canvas.height); // empty Waveform Canvas
     });
 
 
@@ -127,9 +133,10 @@ function handleFileSelect(evt, type, nr) {
 
     const loopButton = document.getElementById('loopButton' + nr);
 
+    //Function to loop media files
     loopButton.addEventListener('click', () => {
-        audioTrack.loop = !audioTrack.loop; // Setze den Wert, ob audio loopt immer auf den gegensätzlichen Wert (true -> false, false -> true)
-        if (audioTrack.loop) { // Wenn alle Elemente true sind
+        audioTrack.loop = !audioTrack.loop; // Set the value whether audio loops always to the opposite value (true -> false, false -> true)
+        if (audioTrack.loop) { // If all elements are true
             loopButton.firstElementChild.innerHTML = "Unloop";
         } else {
             loopButton.firstElementChild.innerHTML = "Loop";
@@ -196,7 +203,7 @@ loopButton.addEventListener('click', () => {
 });
 } */
 
-// Funktion zum Zurücksetzen des hochgeladenen Audiotracks
+// Function to reset the uploaded audio track
 function resetAudioTrack(nr) {
     const record = document.getElementById('record' + nr);
     const controllerDiv = document.getElementById('audioRegulatorsAudio' + nr);
@@ -204,37 +211,40 @@ function resetAudioTrack(nr) {
 
     if (audio) {
         audio.pause();
-        audio.src = ''; // Leeren der src, um Audio zu stoppen und von URL zu lösen
-        audio.load(); // Neuladen der Audio
+        audio.src = ''; // Empty the src to stop audio and detach from URL
+        audio.load(); // Reloading the audio
         controllerDiv.removeChild(audio);
         delete audioLoadedStatus[nr];
     }
 
-    // Animation der Schallplatte pausieren
+    // Pause animation of the record
     record.style.animationPlayState = 'paused';
     record.offsetHeight;
 
-    // Reglerwerte zurücksetzen
+    // Reset controller values
     const volumeSlider = document.getElementById('volumeSlider' + nr);
     const playbackSpeedSlider = document.getElementById('playbackSpeedSlider' + nr);
-    volumeSlider.value = 100; // Zurücksetzen der Lautstärke
-    playbackSpeedSlider.value = 1.0; // Zurücksetzen des Wiedergabegeschwindigkeitssliders
+    volumeSlider.value = 100; // Reset the volume
+    playbackSpeedSlider.value = 1.0; // Reset the playback speed slider
 }
 
+// Function to reset the uploaded video track
 function resetVideoTrack(nr) {
     const videoPlayer = document.getElementById('videoPlayer' + nr);
     if (videoPlayer) {
         const video = videoPlayer.querySelector('video');
         if (video) {
             video.pause();
-            video.src = ''; // Leeren der src, um Video zu stoppen und von URL zu lösen
-            video.load(); // Neuladen des Videos
+            video.src = ''; // Empty the src to stop video and detach from URL
+            video.load(); // Reload the video
         }
         delete videoLoadedStatus[nr];
         console.log(videoPlayer);
     }
 }
 
+/*visualize the frequency data of HTML audio element on a canvas
+render a real-time audio visualization on the canvas element using the frequency data obtained from the given audio element*/
 function visualizeAudio(audio, nr) {
     const canvas = document.getElementById('visualizeAudio' + nr);
     const context = canvas.getContext('2d');
@@ -259,7 +269,7 @@ function visualizeAudio(audio, nr) {
         context.clearRect(0, 0, canvas.width, canvas.height);
         analyser.getByteFrequencyData(dataArray);
         for (let i = 0; i < bufferLength; i++) {
-            barHeight = dataArray[i] / 2; // durch 2, damit die Balkenhöhe im Canvas bleibt -> gestaucht
+            barHeight = dataArray[i] / 2; // divide by 2 so that the bar height remains in the canvas -> compressed
             context.fillStyle = "white";
             context.fillRect(x, canvas.height - barHeight, barWidth, barHeight);
             x += barWidth;
@@ -269,6 +279,10 @@ function visualizeAudio(audio, nr) {
     animate();
 }
 
+/*overlay two videos on HTML canvas and allow color filtering for the first video based on checkboxes (red, green, blue channel)
+second video is overlayed with adjustable transparency using the slider
+continuously update the canvas to create an interactive video overlay effect
+ */
 function overlayVideos() {
     const canvas = document.getElementById('chromaVideo');
     const ctx = canvas.getContext('2d');

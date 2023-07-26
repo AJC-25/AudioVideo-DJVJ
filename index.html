@@ -24,12 +24,9 @@
     </div>
   </div>
 
-  <!-- Audio -->
-
-  <!--Audio visualization-->
-
   <div class="grid-container">
     <div class="grid-item">
+      <!--Regulators for Audio 1 & Video 1-->
       <div class="audioRegulators" id="audioRegulatorsAudio1">
         <button class="audioButton" id="playButton1">
           <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 14 14" height="20" width="20">
@@ -73,10 +70,12 @@
       </div>
     </div>
 
+    <!--Upload Audio-->
     <div class="grid-item">
       <div class="uploadButtonAudio" style="text-align: center; color:#ffffff;">
         <button class="uploadAudio" id="1">Upload Audio 1 File</button>
       </div>
+      <!--Audio visualization 1-->
       <div class="audioTrack" id="audioTrack1">
         <canvas id="visualizeAudio1"></canvas>
       </div>
@@ -89,6 +88,7 @@
       <div class="uploadButtonAudio" style="text-align: center; color:#ffffff;">
         <button class="uploadAudio" id="2">Upload Audio 2 File</button>
       </div>
+      <!--Audio visualization 2-->
       <div class="audioTrack" id="audioTrack2">
         <canvas id="visualizeAudio2"></canvas>
       </div>
@@ -98,6 +98,7 @@
     </div>
 
     <div class="grid-item">
+      <!--Regulators for Audio 2 & Video 2-->
       <div class="audioRegulators" id="audioRegulatorsAudio2">
         <button class="audioButton" id="playButton2">
           <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 14 14" height="20" width="20">
@@ -143,6 +144,7 @@
   </div>
   <div class="grid-container">
     <div class="grid-item">
+      <!--Upload Video 1-->
       <div style="text-align: center; color:#ffffff;">
         <button id="1" class="uploadVideo">
           <span>Load Video 1</span>
@@ -152,6 +154,7 @@
         <!-- put video here after loading -->
         <video id="uploadedVideo1" style="display: none;" controls></video>
       </div>
+      <!--Chromakeying with colors red, green, blue-->
       <div class="videoRegulators" id="chromaColor1">
         <p style="text-align: center;">Color Layer:</p>
         <label class="container">Red
@@ -180,6 +183,7 @@
       </div>
     </div>
     <div class="grid-item">
+      <!--Upload Video 2-->
       <div style="text-align: center; color:#ffffff;">
         <button id="2" class="uploadVideo">
           <span>Load Video 2</span>
