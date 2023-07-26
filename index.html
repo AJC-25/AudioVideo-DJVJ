@@ -141,7 +141,6 @@
       </div>
     </div>
   </div>
-
   <div class="grid-container">
     <div class="grid-item">
       <div style="text-align: center; color:#ffffff;">
@@ -154,25 +153,25 @@
         <video id="uploadedVideo1" style="display: none;" controls></video>
       </div>
       <div class="videoRegulators" id="chromaColor1">
-        <p style="text-align: center;">Chroma Color:</p>
+        <p style="text-align: center;">Color Layer:</p>
         <label class="container">Red
-          <input type="checkbox">
+          <input type="checkbox" id="video1RedCheckbox">
           <span class="checkmark"></span>
         </label><br>
         <label class="container">Green
-          <input type="checkbox">
+          <input type="checkbox" id="video1GreenCheckbox">
           <span class="checkmark"></span>
         </label><br>
         <label class="container">Blue
-          <input type="checkbox">
+          <input type="checkbox" id="video1BlueCheckbox">
           <span class="checkmark"></span>
         </label>
       </div>
       <input type="file" class="uploadVideo" id="videoInput1" accept="video/*" style="display:none;">
     </div>
     <div class="grid-item">
-      <div class="resultVideo" id="chromaVideo">
-        <!-- put video here after chromakeying -->
+      <div class="resultVideo">
+        <canvas id="chromaVideo"></canvas> <!-- This is the canvas element for video overlay -->
         <video id="resultVideo1" style="display: none;" controls></video>
       </div>
       <div class="videoRegulators" id="chromaSliderBox">
@@ -190,24 +189,25 @@
         <!-- put video here after loading -->
         <video id="uploadedVideo2" style="display: none;" controls></video>
       </div>
-      <div class="videoRegulators" id="chromaColor2">
-        <p style="text-align: center;">Chroma Color:</p>
+      <!--<div class="videoRegulators" id="chromaColor2">
+        <p style="text-align: center;">Color Layer:</p>
         <label class="container">Red
-          <input type="checkbox">
+          <input type="checkbox" id="video2RedCheckbox">
           <span class="checkmark"></span>
         </label><br>
         <label class="container">Green
-          <input type="checkbox">
+          <input type="checkbox" id="video2GreenCheckbox">
           <span class="checkmark"></span>
         </label><br>
         <label class="container">Blue
-          <input type="checkbox">
+          <input type="checkbox" id="video2BlueCheckbox">
           <span class="checkmark"></span>
-        </label>
-      </div>
-      <input type="file" class="uploadVideo" id="videoInput2" accept="video/*" style="display:none;">
+        </label>-->
     </div>
+    <input type="file" class="uploadVideo" id="videoInput2" accept="video/*" style="display:none;">
   </div>
+  </div>
+
 
 
   <!-- Scripts -->
